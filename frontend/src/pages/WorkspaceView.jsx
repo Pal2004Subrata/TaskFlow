@@ -2,9 +2,11 @@ import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, Plus, Search, Loader2, Trash2, UserPlus, Calendar, CheckSquare, Clock, Command, CheckCircle2, X } from 'lucide-react';
+import { ArrowLeft, Plus, Search, Loader2, Trash2, UserPlus, Calendar, CheckSquare, Clock, Command, CheckCircle2, X, Moon, Sun } from 'lucide-react';
 import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
+import ThemeToggle from '../components/ThemeToggle';
 import TaskModal from '../components/TaskModal';
 import InviteMemberModal from '../components/InviteMemberModal';
 import ProfileModal from '../components/ProfileModal';
@@ -14,6 +16,7 @@ import NotificationsDropdown from '../components/NotificationsDropdown';
 const WorkspaceView = () => {
   const { id: workspaceId } = useParams();
   const { user } = useAuth();
+  const { isDarkMode, toggleTheme } = useTheme();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
@@ -119,47 +122,47 @@ const WorkspaceView = () => {
         setSelectedTask(task);
         setIsTaskModalOpen(true);
       }}
-      className="bg-white border border-slate-200/80 p-4 rounded-xl shadow-sm hover:shadow-md hover:border-slate-300 transition-all cursor-pointer shrink-0 group flex flex-col"
+      className="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 p-4 rounded-xl shadow-sm dark:shadow-none hover:shadow-md hover:border-slate-300 dark:hover:border-slate-700 transition-all cursor-pointer shrink-0 group flex flex-col"
     >
       <div className="flex justify-between items-start mb-3">
         <div className={`text-[10px] font-bold px-2.5 py-1 rounded-md flex w-max ring-1 ring-inset ${getPriorityColor(task.priority)}`}>
           {task.priority} Priority
         </div>
         {task.dueDate && (
-           <div className="text-[10px] font-medium text-slate-500 flex items-center gap-1 bg-slate-50 px-2 py-1 rounded border border-slate-100">
+           <div className="text-[10px] font-medium text-slate-500 dark:text-slate-400 flex items-center gap-1 bg-slate-50 dark:bg-slate-800 px-2 py-1 rounded border border-slate-100 dark:border-slate-700">
              <Calendar className="w-3 h-3" />
              {new Date(task.dueDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
            </div>
         )}
       </div>
-      <p className="text-sm font-semibold text-slate-800 mb-2 group-hover:text-indigo-600 leading-snug transition-colors">{task.title}</p>
+      <p className="text-sm font-semibold text-slate-800 dark:text-slate-200 mb-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 leading-snug transition-colors">{task.title}</p>
       {task.description && (
-        <p className="text-xs text-slate-500 mb-4 line-clamp-2">{task.description}</p>
+        <p className="text-xs text-slate-500 dark:text-slate-400 mb-4 line-clamp-2">{task.description}</p>
       )}
       
       {task.createdBy && (
-        <p className="text-[10px] text-slate-400 mb-2 mt-auto">Created by <span className="font-medium text-slate-500">{task.createdBy.name}</span></p>
+        <p className="text-[10px] text-slate-400 dark:text-slate-500 mb-2 mt-auto">Created by <span className="font-medium text-slate-500 dark:text-slate-400 dark:text-slate-400">{task.createdBy.name}</span></p>
       )}
       
-      <div className="flex justify-between items-center pt-3 border-t border-slate-50">
+      <div className="flex justify-between items-center pt-3 border-t border-slate-50 dark:border-slate-800">
         <div className="flex items-center gap-2">
           {task.assignee ? (
             <>
-              <div className="w-6 h-6 rounded-full bg-indigo-100 border-2 border-white flex items-center justify-center text-[9px] font-bold text-indigo-700 shadow-sm shrink-0" title={task.assignee.name}>
+              <div className="w-6 h-6 rounded-full bg-indigo-100 border-2 border-white dark:border-slate-950 flex items-center justify-center text-[9px] font-bold text-indigo-700 shadow-sm shrink-0" title={task.assignee.name}>
                 {task.assignee.name.substring(0, 2).toUpperCase()}
               </div>
-              <span className="text-[10px] text-slate-500 truncate max-w-[130px]">Assigned to: <span className="font-medium text-slate-600">{task.assignee.name}</span></span>
+              <span className="text-[10px] text-slate-500 dark:text-slate-400 truncate max-w-[130px]">Assigned to: <span className="font-medium text-slate-600 dark:text-slate-400">{task.assignee.name}</span></span>
             </>
           ) : (
             <>
-              <div className="w-6 h-6 rounded-full bg-slate-100 border-2 border-white flex items-center justify-center text-[9px] font-bold text-slate-400 shadow-sm shrink-0" title="Unassigned">
+              <div className="w-6 h-6 rounded-full bg-slate-100 border-2 border-white dark:border-slate-950 flex items-center justify-center text-[9px] font-bold text-slate-400 shadow-sm shrink-0" title="Unassigned">
                 ?
               </div>
-              <span className="text-[10px] text-slate-400 font-medium">Unassigned</span>
+              <span className="text-[10px] text-slate-400 dark:text-slate-500 font-medium">Unassigned</span>
             </>
           )}
         </div>
-        <div className={`flex items-center gap-1.5 shrink-0 ${task.status === 'Done' ? 'text-emerald-500' : 'text-slate-400'}`}>
+        <div className={`flex items-center gap-1.5 shrink-0 ${task.status === 'Done' ? 'text-emerald-500' : 'text-slate-400 dark:text-slate-500'}`}>
            <CheckCircle2 className="w-4 h-4" />
            <span className="text-xs font-medium">
              {task.status === 'Done' ? 'Done' : 'Task'}
@@ -174,31 +177,33 @@ const WorkspaceView = () => {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 pb-20">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white pb-20 transition-colors">
       {/* Workspace Header - Top nav */}
-      <div className="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
+      <div className="bg-white dark:bg-slate-950/80 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 sticky top-0 z-30 shadow-sm transition-colors">
         <div className="max-w-7xl mx-auto px-6 py-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div className="flex items-center gap-4">
-            <Link to="/dashboard" className="p-2 hover:bg-slate-100 rounded-lg text-slate-500 transition-colors">
+            <Link to="/dashboard" className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-slate-500 dark:text-slate-400 dark:text-slate-400 dark:hover:text-white transition-colors">
               <ArrowLeft className="w-5 h-5" />
             </Link>
             <div>
-              <h1 className="text-xl font-bold text-slate-900 tracking-tight">{workspace?.name}</h1>
-              <div className="flex items-center gap-3 text-xs font-medium text-slate-500 mt-0.5">
+              <h1 className="text-xl font-bold text-slate-900 dark:text-white tracking-tight">{workspace?.name}</h1>
+              <div className="flex items-center gap-3 text-xs font-medium text-slate-500 dark:text-slate-400 mt-0.5">
                 <span className="flex items-center gap-1"><UserPlus className="w-3 h-3" /> {workspace?.members.length} Members</span>
-                <span className="w-1 h-1 rounded-full bg-slate-300"></span>
+                <span className="w-1 h-1 rounded-full bg-slate-300 dark:bg-slate-600"></span>
                 <span>Admin: {workspace?.owner.name}</span>
               </div>
             </div>
           </div>
 
           <div className="flex items-center gap-3 w-full md:w-auto">
+            
+            <ThemeToggle className="mr-2 md:mr-4 hidden md:flex" />
             <NotificationsDropdown />
             {workspace?.owner._id === user?._id && (
               <>
                 <button 
                   onClick={() => setIsInviteOpen(true)}
-                  className="bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2"
+                  className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2"
                 >
                   <UserPlus className="w-4 h-4" /> Invite
                 </button>
@@ -220,16 +225,16 @@ const WorkspaceView = () => {
 
       <div className="max-w-7xl mx-auto px-6 mt-8">
         {/* Tabs */}
-        <div className="flex items-center gap-4 border-b border-slate-200 mb-6">
+        <div className="flex items-center gap-4 border-b border-slate-200 dark:border-slate-800 mb-6">
           <button
             onClick={() => setActiveTab('tasks')}
-            className={`pb-3 text-sm font-semibold transition-colors border-b-2 ${activeTab === 'tasks' ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-slate-500 hover:text-slate-700'}`}
+            className={`pb-3 text-sm font-semibold transition-colors border-b-2 ${activeTab === 'tasks' ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300'}`}
           >
             Tasks Board
           </button>
           <button
             onClick={() => setActiveTab('chat')}
-            className={`relative pb-3 text-sm font-semibold transition-colors border-b-2 ${activeTab === 'chat' ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-slate-500 hover:text-slate-700'}`}
+            className={`relative pb-3 text-sm font-semibold transition-colors border-b-2 ${activeTab === 'chat' ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300'}`}
           >
             Team Chat
             {hasUnreadChat && (
@@ -246,13 +251,13 @@ const WorkspaceView = () => {
             <ChatInterface workspaceId={workspaceId} members={workspace?.members || []} />
           </div>
         ) : (
-          <div className="bg-[#F8FAFC] rounded-xl shadow-sm border border-slate-200 overflow-hidden flex flex-col h-[750px] relative">
+          <div className="bg-[#F8FAFC] dark:bg-[#0f172a] rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden flex flex-col h-[750px] relative">
           
           {/* Internal Header */}
-          <div className="h-16 border-b border-slate-200/60 bg-white/40 backdrop-blur-md flex flex-wrap items-center justify-between px-6 shrink-0 z-10 gap-4">
+          <div className="h-16 border-b border-slate-200/60 dark:border-slate-800/60 bg-white/40 dark:bg-slate-900/40 backdrop-blur-md flex flex-wrap items-center justify-between px-6 shrink-0 z-10 gap-4">
              <div className="flex items-center gap-4">
-                <h2 className="text-lg font-bold text-slate-800 hidden sm:block">Tasks</h2>
-                <div className="h-4 w-px bg-slate-300 hidden sm:block"></div>
+                <h2 className="text-lg font-bold text-slate-800 dark:text-white hidden sm:block">Tasks</h2>
+                <div className="h-4 w-px bg-slate-300 dark:bg-slate-700 hidden sm:block"></div>
                 <div 
                   className="flex -space-x-2 cursor-pointer hover:opacity-80 transition-opacity" 
                   onClick={() => setIsMembersModalOpen(true)}
@@ -266,13 +271,13 @@ const WorkspaceView = () => {
                       ];
                       const color = colors[idx % colors.length];
                       return (
-                        <div key={member._id} className={`w-7 h-7 rounded-full ${color} border-2 border-white flex items-center justify-center text-[10px] font-bold shadow-sm z-${40 - idx * 10}`} title={member.name}>
+                        <div key={member._id} className={`w-7 h-7 rounded-full ${color} border-2 border-white dark:border-slate-950 flex items-center justify-center text-[10px] font-bold shadow-sm z-${40 - idx * 10}`} title={member.name}>
                           {member.name.substring(0, 2).toUpperCase()}
                         </div>
                       )
                    })}
                    {workspace?.members.length > 4 && (
-                     <div className="w-7 h-7 rounded-full bg-slate-100 text-slate-600 border-2 border-white flex items-center justify-center text-[10px] font-bold z-0 shadow-sm">
+                     <div className="w-7 h-7 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-2 border-white dark:border-slate-950 dark:border-slate-950 flex items-center justify-center text-[10px] font-bold z-0 shadow-sm">
                        +{workspace.members.length - 4}
                      </div>
                    )}
@@ -280,22 +285,22 @@ const WorkspaceView = () => {
              </div>
              
              <div className="flex items-center gap-3 overflow-x-auto pb-1 sm:pb-0 hide-scrollbar">
-                <div className="flex items-center gap-2 bg-white border border-slate-200 rounded-md px-3 py-1.5 text-sm text-slate-400 shadow-sm min-w-[180px] relative group">
+                <div className="flex items-center gap-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md px-3 py-1.5 text-sm text-slate-400 dark:text-slate-500 shadow-sm min-w-[180px] relative group">
                   <Search className="w-4 h-4 text-slate-400 group-focus-within:text-indigo-500 transition-colors" />
                   <input 
                     type="text" 
                     placeholder="Search..."
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
-                    className="flex-1 bg-transparent border-none focus:outline-none text-slate-700 placeholder:text-slate-400 w-full"
+                    className="flex-1 bg-transparent border-none focus:outline-none text-slate-700 dark:text-slate-300 placeholder:text-slate-400 dark:placeholder:text-slate-500 w-full"
                   />
-                  <span className="hidden lg:flex items-center gap-0.5 bg-slate-100 text-slate-500 rounded px-1 text-[10px] font-medium border border-slate-200"><Command className="w-3 h-3"/>K</span>
+                  <span className="hidden lg:flex items-center gap-0.5 bg-slate-100 text-slate-500 dark:text-slate-400 rounded px-1 text-[10px] font-medium border border-slate-200"><Command className="w-3 h-3"/>K</span>
                 </div>
                 
                 <select 
                   value={statusFilter}
                   onChange={(e) => { setStatusFilter(e.target.value); setPage(1); }}
-                  className="bg-white border border-slate-200 rounded-md px-3 py-1.5 text-slate-600 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500/20 shadow-sm"
+                  className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md px-3 py-1.5 text-slate-600 dark:text-slate-300 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500/20 shadow-sm"
                 >
                   <option value="">Status</option>
                   <option value="To Do">To Do</option>
@@ -306,7 +311,7 @@ const WorkspaceView = () => {
                 <select 
                   value={priorityFilter}
                   onChange={(e) => { setPriorityFilter(e.target.value); setPage(1); }}
-                  className="bg-white border border-slate-200 rounded-md px-3 py-1.5 text-slate-600 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500/20 shadow-sm"
+                  className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md px-3 py-1.5 text-slate-600 dark:text-slate-300 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500/20 shadow-sm"
                 >
                   <option value="">Priority</option>
                   <option value="Low">Low</option>
@@ -319,7 +324,7 @@ const WorkspaceView = () => {
                     setSelectedTask(null);
                     setIsTaskModalOpen(true);
                   }}
-                  className="bg-slate-900 text-white text-sm font-medium px-4 py-1.5 rounded-md shadow-sm hover:bg-slate-800 transition-colors flex items-center gap-1.5 whitespace-nowrap"
+                  className="bg-slate-900 dark:bg-indigo-600 text-white text-sm font-medium px-4 py-1.5 rounded-md shadow-sm hover:bg-slate-800 dark:hover:bg-indigo-500 transition-colors flex items-center gap-1.5 whitespace-nowrap"
                 >
                   <Plus className="w-4 h-4" /> Task
                 </button>
@@ -327,16 +332,16 @@ const WorkspaceView = () => {
           </div>
 
           {/* Kanban Board Area */}
-          <div className="flex-1 relative overflow-hidden bg-slate-50/50">
+          <div className="flex-1 relative overflow-hidden bg-slate-50/50 dark:bg-slate-950/50">
             {tasksLoading ? (
                <div className="absolute inset-0 flex items-center justify-center"><Loader2 className="w-8 h-8 animate-spin text-indigo-600" /></div>
             ) : tasks.length === 0 && !search && !statusFilter && !priorityFilter ? (
               <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6">
-                <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4 border border-slate-200 shadow-sm">
+                <div className="w-16 h-16 bg-white dark:bg-slate-900 rounded-full flex items-center justify-center mx-auto mb-4 border border-slate-200 dark:border-slate-800 shadow-sm dark:shadow-none">
                   <CheckSquare className="w-6 h-6 text-slate-400" />
                 </div>
-                <p className="text-slate-900 font-semibold text-lg mb-1">No tasks found</p>
-                <p className="text-slate-500 text-sm mb-6 max-w-sm">Your workspace is empty. Create a new task to get your team started on their goals.</p>
+                <p className="text-slate-900 dark:text-white font-semibold text-lg mb-1">No tasks found</p>
+                <p className="text-slate-500 dark:text-slate-400 text-sm mb-6 max-w-sm">Your workspace is empty. Create a new task to get your team started on their goals.</p>
                 <button 
                   onClick={() => {
                     setSelectedTask(null);
@@ -353,15 +358,15 @@ const WorkspaceView = () => {
                 {/* To Do Column */}
                 <div className="w-80 flex-shrink-0 flex flex-col gap-4">
                   <div className="flex items-center justify-between px-1 shrink-0">
-                    <h3 className="font-semibold text-sm text-slate-700 flex items-center gap-2">
-                      To Do <span className="text-xs font-medium bg-slate-200/70 text-slate-600 px-2 py-0.5 rounded-full">{todoTasks.length}</span>
+                    <h3 className="font-semibold text-sm text-slate-700 dark:text-slate-200 flex items-center gap-2">
+                      To Do <span className="text-xs font-medium bg-slate-200/70 dark:bg-slate-800 text-slate-600 dark:text-slate-300 px-2 py-0.5 rounded-full">{todoTasks.length}</span>
                     </h3>
                     <button 
                       onClick={() => {
                         setSelectedTask(null);
                         setIsTaskModalOpen(true);
                       }}
-                      className="text-slate-400 hover:text-slate-700 transition-colors bg-white hover:bg-slate-100 border border-slate-200 rounded p-0.5 shadow-sm"
+                      className="text-slate-400 hover:text-slate-700 dark:hover:text-slate-300 transition-colors bg-white hover:bg-slate-100 border border-slate-200 rounded p-0.5 shadow-sm"
                     >
                       <Plus className="w-4 h-4"/>
                     </button>
@@ -373,7 +378,7 @@ const WorkspaceView = () => {
                         setSelectedTask(null);
                         setIsTaskModalOpen(true);
                       }}
-                      className="border-2 border-dashed border-slate-200/80 rounded-xl p-4 text-center text-sm font-medium text-slate-400 hover:text-slate-600 hover:border-slate-300 hover:bg-white transition-all cursor-pointer"
+                      className="border-2 border-dashed border-slate-200/80 dark:border-slate-800/80 rounded-xl p-4 text-center text-sm font-medium text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 hover:border-slate-300 dark:hover:border-slate-700 hover:bg-white dark:hover:bg-slate-900 transition-all cursor-pointer"
                     >
                       + Add Task
                     </div>
@@ -383,7 +388,7 @@ const WorkspaceView = () => {
                 {/* In Progress Column */}
                 <div className="w-80 flex-shrink-0 flex flex-col gap-4">
                   <div className="flex items-center justify-between px-1 shrink-0">
-                    <h3 className="font-semibold text-sm text-slate-700 flex items-center gap-2">
+                    <h3 className="font-semibold text-sm text-slate-700 dark:text-slate-200 flex items-center gap-2">
                       In Progress <span className="text-xs font-medium bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full">{inProgressTasks.length}</span>
                     </h3>
                   </div>
@@ -395,7 +400,7 @@ const WorkspaceView = () => {
                 {/* Done Column */}
                 <div className="w-80 flex-shrink-0 flex flex-col gap-4">
                   <div className="flex items-center justify-between px-1 shrink-0">
-                    <h3 className="font-semibold text-sm text-slate-700 flex items-center gap-2">
+                    <h3 className="font-semibold text-sm text-slate-700 dark:text-slate-200 flex items-center gap-2">
                       Done <span className="text-xs font-medium bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full">{doneTasks.length}</span>
                     </h3>
                   </div>
@@ -410,21 +415,21 @@ const WorkspaceView = () => {
           
           {/* Pagination Controls - Moved to bottom of the board for better access */}
           {tasksData?.totalPages > 1 && (
-            <div className="h-14 border-t border-slate-200/60 bg-white/40 backdrop-blur-md flex items-center justify-center px-6 shrink-0 gap-4">
+            <div className="h-14 border-t border-slate-200/60 dark:border-slate-800/60 bg-white/40 dark:bg-slate-900/40 backdrop-blur-md flex items-center justify-center px-6 shrink-0 gap-4">
               <button 
                 disabled={page === 1}
                 onClick={() => setPage(p => p - 1)}
-                className="px-3 py-1.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-md disabled:opacity-50 text-xs font-medium transition-colors shadow-sm"
+                className="px-3 py-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-md disabled:opacity-50 text-xs font-medium transition-colors shadow-sm"
               >
                 Previous
               </button>
-              <span className="text-xs font-medium text-slate-500">
+              <span className="text-xs font-medium text-slate-500 dark:text-slate-400">
                 Page {page} of {tasksData.totalPages}
               </span>
               <button 
                 disabled={page === tasksData.totalPages}
                 onClick={() => setPage(p => p + 1)}
-                className="px-3 py-1.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-md disabled:opacity-50 text-xs font-medium transition-colors shadow-sm"
+                className="px-3 py-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-md disabled:opacity-50 text-xs font-medium transition-colors shadow-sm"
               >
                 Next
               </button>
@@ -437,21 +442,21 @@ const WorkspaceView = () => {
       {/* Members Modal */}
       <AnimatePresence>
         {isMembersModalOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/20 backdrop-blur-sm">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/20 dark:bg-slate-950/60 backdrop-blur-sm">
             <motion.div 
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="bg-white border border-slate-200 p-6 md:p-8 rounded-3xl w-full max-w-md shadow-2xl max-h-[80vh] flex flex-col"
+              className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 md:p-8 rounded-3xl w-full max-w-md shadow-2xl max-h-[80vh] flex flex-col"
             >
               <div className="flex justify-between items-center mb-6">
                 <div>
-                  <h2 className="text-2xl font-bold text-slate-900">Workspace Members</h2>
-                  <p className="text-slate-500 text-sm">{workspace?.members.length} total members</p>
+                  <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Workspace Members</h2>
+                  <p className="text-slate-500 dark:text-slate-400 text-sm">{workspace?.members.length} total members</p>
                 </div>
                 <button 
                   onClick={() => setIsMembersModalOpen(false)} 
-                  className="p-2 hover:bg-slate-100 rounded-full transition-colors text-slate-500 hover:text-slate-900"
+                  className="p-2 hover:bg-slate-100 rounded-full transition-colors text-slate-500 dark:text-slate-400 hover:text-slate-900"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -459,13 +464,13 @@ const WorkspaceView = () => {
 
               <div className="overflow-y-auto flex-1 pr-2 custom-scrollbar space-y-3">
                 {workspace?.members.map(member => (
-                  <div key={member._id} className="flex items-center gap-4 p-3 hover:bg-slate-50 rounded-xl transition-colors border border-transparent hover:border-slate-100">
+                  <div key={member._id} className="flex items-center gap-4 p-3 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-colors border border-transparent hover:border-slate-100 dark:hover:border-slate-700">
                     <div className="w-10 h-10 rounded-full bg-indigo-100 text-indigo-700 font-bold flex items-center justify-center flex-shrink-0">
                       {member.name.substring(0, 2).toUpperCase()}
                     </div>
                     <div>
-                      <h4 className="font-semibold text-slate-900">{member.name} {member._id === workspace?.owner._id && <span className="text-xs bg-indigo-50 text-indigo-600 px-2 py-0.5 rounded-full ml-2">Admin</span>}</h4>
-                      <p className="text-xs text-slate-500">{member.email}</p>
+                      <h4 className="font-semibold text-slate-900 dark:text-white">{member.name} {member._id === workspace?.owner._id && <span className="text-xs bg-indigo-50 text-indigo-600 px-2 py-0.5 rounded-full ml-2">Admin</span>}</h4>
+                      <p className="text-xs text-slate-500 dark:text-slate-400">{member.email}</p>
                     </div>
                   </div>
                 ))}

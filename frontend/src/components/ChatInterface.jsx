@@ -152,23 +152,23 @@ const ChatInterface = ({ workspaceId, members = [] }) => {
 
   if (isLoading && messages.length === 0) {
     return (
-      <div className="flex items-center justify-center h-full bg-white rounded-xl shadow-sm border border-slate-200">
+      <div className="flex items-center justify-center h-full bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800">
         <Loader2 className="w-8 h-8 animate-spin text-indigo-600" />
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col h-full bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden relative">
+    <div className="flex flex-col h-full bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden relative transition-colors">
       {/* Messages Area */}
-      <div className="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar bg-slate-50/50">
+      <div className="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar bg-slate-50/50 dark:bg-slate-950/50">
         <AnimatePresence initial={false}>
           {messages.length === 0 ? (
-            <div className="h-full flex flex-col items-center justify-center text-slate-400 p-6 text-center space-y-2">
-              <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mb-2">
-                <Send className="w-6 h-6 text-slate-300" />
+            <div className="h-full flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 p-6 text-center space-y-2">
+              <div className="w-16 h-16 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mb-2">
+                <Send className="w-6 h-6 text-slate-300 dark:text-slate-600" />
               </div>
-              <p className="font-medium text-slate-500">No messages yet</p>
+              <p className="font-medium text-slate-500 dark:text-slate-400">No messages yet</p>
               <p className="text-sm">Start the conversation with your team!</p>
             </div>
           ) : (
@@ -183,8 +183,8 @@ const ChatInterface = ({ workspaceId, members = [] }) => {
                   if (formattedText.includes(mentionStr)) {
                     const isMentioningMe = member._id === user._id;
                     const mentionClass = isMentioningMe 
-                      ? 'bg-amber-100 text-amber-800 px-1 py-0.5 rounded font-semibold'
-                      : 'text-indigo-600 font-semibold';
+                      ? 'bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-300 px-1 py-0.5 rounded font-semibold'
+                      : 'text-indigo-600 dark:text-indigo-400 font-semibold';
                     
                     // Simple replacement (works for basic cases, not perfect if names overlap, but good enough)
                     formattedText = formattedText.split(mentionStr).join(`<span class="${mentionClass}">${mentionStr}</span>`);
@@ -200,7 +200,7 @@ const ChatInterface = ({ workspaceId, members = [] }) => {
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   className={`flex gap-3 max-w-[80%] group ${isMe ? 'ml-auto flex-row-reverse' : ''} ${msg.isOptimistic ? 'opacity-70' : ''}`}
                 >
-                  <div className="w-8 h-8 shrink-0 rounded-full bg-indigo-100 flex items-center justify-center border-2 border-white shadow-sm overflow-hidden text-[10px] font-bold text-indigo-700 mt-auto">
+                  <div className="w-8 h-8 shrink-0 rounded-full bg-indigo-100 dark:bg-indigo-900 flex items-center justify-center border-2 border-white dark:border-slate-900 shadow-sm overflow-hidden text-[10px] font-bold text-indigo-700 dark:text-indigo-300 mt-auto">
                     {msg.sender.avatar ? (
                       <img src={msg.sender.avatar} alt={msg.sender.name} className="w-full h-full object-cover" />
                     ) : (
@@ -210,7 +210,7 @@ const ChatInterface = ({ workspaceId, members = [] }) => {
                   
                   <div className={`flex flex-col ${isMe ? 'items-end' : 'items-start'} relative`}>
                     <div className={`flex items-center gap-2 mb-1 ${isMe ? 'flex-row-reverse' : ''}`}>
-                      <span className="text-[11px] font-medium text-slate-500 ml-1 mr-1">
+                      <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400 ml-1 mr-1">
                         {isMe ? 'You' : msg.sender.name}
                       </span>
                       <button 
@@ -226,16 +226,16 @@ const ChatInterface = ({ workspaceId, members = [] }) => {
                       className={`relative px-4 py-2.5 rounded-2xl text-[14px] leading-relaxed shadow-sm flex flex-col gap-1 ${
                         isMe 
                           ? 'bg-indigo-600 text-white rounded-br-sm' 
-                          : 'bg-white border border-slate-200 text-slate-800 rounded-bl-sm'
+                          : 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 rounded-bl-sm'
                       }`}
                     >
                       {/* Replied Message Block */}
                       {msg.replyTo && (
-                        <div className={`text-xs p-2 rounded-lg mb-1 flex flex-col gap-0.5 ${isMe ? 'bg-indigo-700/50 border-l-2 border-indigo-300' : 'bg-slate-100 border-l-2 border-indigo-400'}`}>
-                          <span className={`font-semibold ${isMe ? 'text-indigo-200' : 'text-indigo-600'}`}>
+                        <div className={`text-xs p-2 rounded-lg mb-1 flex flex-col gap-0.5 ${isMe ? 'bg-indigo-700/50 border-l-2 border-indigo-300' : 'bg-slate-100 dark:bg-slate-900 border-l-2 border-indigo-400 dark:border-indigo-500'}`}>
+                          <span className={`font-semibold ${isMe ? 'text-indigo-200' : 'text-indigo-600 dark:text-indigo-400'}`}>
                             {msg.replyTo.sender?.name || 'Someone'}
                           </span>
-                          <span className={`line-clamp-1 opacity-90 ${isMe ? 'text-indigo-50' : 'text-slate-600'}`}>
+                          <span className={`line-clamp-1 opacity-90 ${isMe ? 'text-indigo-50' : 'text-slate-600 dark:text-slate-300'}`}>
                             {msg.replyTo.content}
                           </span>
                         </div>
@@ -244,7 +244,7 @@ const ChatInterface = ({ workspaceId, members = [] }) => {
                       {renderContent(msg.content)}
                     </div>
                     
-                    <span className="text-[10px] text-slate-400 mt-1 ml-1 mr-1">
+                    <span className="text-[10px] text-slate-400 dark:text-slate-500 mt-1 ml-1 mr-1">
                       {new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </span>
                   </div>
@@ -263,16 +263,16 @@ const ChatInterface = ({ workspaceId, members = [] }) => {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 10 }}
-            className="absolute bottom-[72px] left-4 bg-white border border-slate-200 rounded-xl shadow-xl z-10 w-64 overflow-hidden max-h-48 overflow-y-auto custom-scrollbar"
+            className="absolute bottom-[72px] left-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl shadow-xl z-10 w-64 overflow-hidden max-h-48 overflow-y-auto custom-scrollbar"
           >
             {filteredMembers.map((member, idx) => (
               <button
                 key={member._id}
                 onClick={() => handleMentionSelect(member)}
                 onMouseEnter={() => setMentionIndex(idx)}
-                className={`w-full text-left px-4 py-2 text-sm flex items-center gap-3 transition-colors ${idx === mentionIndex || (mentionIndex === -1 && idx === 0) ? 'bg-indigo-50 text-indigo-700' : 'text-slate-700 hover:bg-slate-50'}`}
+                className={`w-full text-left px-4 py-2 text-sm flex items-center gap-3 transition-colors ${idx === mentionIndex || (mentionIndex === -1 && idx === 0) ? 'bg-indigo-50 dark:bg-indigo-500/20 text-indigo-700 dark:text-indigo-300' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800'}`}
               >
-                <div className="w-6 h-6 rounded-full bg-slate-200 text-[9px] font-bold flex items-center justify-center shrink-0">
+                <div className="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-700 text-[9px] font-bold flex items-center justify-center shrink-0">
                   {member.name.substring(0, 2).toUpperCase()}
                 </div>
                 <span className="font-medium truncate">{member.name}</span>
@@ -283,7 +283,7 @@ const ChatInterface = ({ workspaceId, members = [] }) => {
       </AnimatePresence>
 
       {/* Input Area */}
-      <div className="bg-white border-t border-slate-200 shrink-0 flex flex-col">
+      <div className="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 shrink-0 flex flex-col">
         
         {/* Reply Banner */}
         <AnimatePresence>
@@ -292,7 +292,7 @@ const ChatInterface = ({ workspaceId, members = [] }) => {
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: 'auto', opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
-              className="bg-indigo-50/50 border-b border-indigo-100 flex items-center justify-between px-4 py-2.5 overflow-hidden"
+              className="bg-indigo-50/50 dark:bg-indigo-900/20 border-b border-indigo-100 dark:border-indigo-900/50 flex items-center justify-between px-4 py-2.5 overflow-hidden"
             >
               <div className="flex items-center gap-3 overflow-hidden">
                 <CornerDownRight className="w-4 h-4 text-indigo-400 shrink-0" />
@@ -300,14 +300,14 @@ const ChatInterface = ({ workspaceId, members = [] }) => {
                   <span className="text-xs font-semibold text-indigo-600">
                     Replying to {replyingTo.sender.name}
                   </span>
-                  <span className="text-xs text-slate-500 truncate">
+                  <span className="text-xs text-slate-500 dark:text-slate-400 truncate">
                     {replyingTo.content}
                   </span>
                 </div>
               </div>
               <button 
                 onClick={() => setReplyingTo(null)}
-                className="p-1 rounded-full hover:bg-indigo-100 text-indigo-400 hover:text-indigo-600 transition-colors shrink-0"
+                className="p-1 rounded-full hover:bg-indigo-100 dark:hover:bg-indigo-900 text-indigo-400 hover:text-indigo-600 transition-colors shrink-0"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -323,7 +323,7 @@ const ChatInterface = ({ workspaceId, members = [] }) => {
             onChange={handleInputChange}
             onKeyDown={handleKeyDown}
             placeholder="Type a message... (use @ to mention)"
-            className="flex-1 bg-slate-50 border border-slate-200 rounded-full pl-5 pr-12 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all text-slate-700 placeholder:text-slate-400"
+            className="flex-1 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-full pl-5 pr-12 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 dark:focus:ring-indigo-500/40 focus:border-indigo-500 transition-all text-slate-700 dark:text-slate-200 placeholder:text-slate-400 dark:placeholder:text-slate-500"
             autoComplete="off"
           />
           <button

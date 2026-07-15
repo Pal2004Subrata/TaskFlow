@@ -37,7 +37,7 @@ function App() {
   const location = useLocation();
 
   return (
-    <div className="min-h-screen bg-background text-slate-900 selection:bg-primary/20 selection:text-primary">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors selection:bg-indigo-500/20 selection:text-indigo-700 dark:selection:text-indigo-300">
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
           <Route path="/login" element={<PublicRoute><PageTransition><Login /></PageTransition></PublicRoute>} />

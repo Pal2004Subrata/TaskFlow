@@ -103,53 +103,53 @@ const TaskModal = ({ isOpen, onClose, workspaceId, workspaceMembers, task }) => 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/20 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/20 dark:bg-slate-950/60 backdrop-blur-sm transition-colors">
       <motion.div 
         initial={{ opacity: 0, scale: 0.95, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: 20 }}
-        className="bg-white border border-slate-200 p-8 rounded-3xl w-full max-w-2xl shadow-2xl max-h-[90vh] overflow-y-auto"
+        className="bg-white dark:bg-slate-900 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 dark:border-slate-800 p-8 rounded-3xl w-full max-w-2xl shadow-2xl max-h-[90vh] overflow-y-auto"
       >
         <div className="flex justify-between items-center mb-8">
-          <h2 className="text-2xl font-bold text-slate-900">
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
             {isEditing ? (canEdit ? 'Edit Task' : 'View Task') : 'Create Task'}
           </h2>
-          <button onClick={onClose} className="p-2 hover:bg-slate-100 rounded-full transition-colors text-slate-500 hover:text-slate-900">
+          <button onClick={onClose} className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 dark:bg-slate-800/50 rounded-full transition-colors text-slate-500 dark:text-slate-400 dark:text-slate-500 hover:text-slate-900 dark:text-white">
             <X className="w-5 h-5" />
           </button>
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1.5">Title</label>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Title</label>
             <input 
               type="text"
               disabled={!canEdit}
               {...register('title')}
-              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-900 font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 disabled:opacity-50 disabled:bg-slate-100 transition-all placeholder:text-slate-400 placeholder:font-normal"
+              className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2.5 text-slate-900 dark:text-white font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 disabled:opacity-50 disabled:bg-slate-100 dark:bg-slate-800/50 transition-all placeholder:text-slate-400 dark:text-slate-500 placeholder:font-normal"
               placeholder="e.g. Design the new landing page"
             />
             {errors.title && <p className="text-red-500 text-xs mt-1.5">{errors.title.message}</p>}
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1.5">Description</label>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Description</label>
             <textarea 
               disabled={!canEdit}
               {...register('description')}
               rows={4}
-              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 disabled:opacity-50 disabled:bg-slate-100 transition-all placeholder:text-slate-400 resize-y"
+              className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 disabled:opacity-50 disabled:bg-slate-100 dark:bg-slate-800/50 transition-all placeholder:text-slate-400 dark:text-slate-500 resize-y"
               placeholder="Add more details about this task..."
             />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1.5">Status</label>
+              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Status</label>
               <select 
                 disabled={!canEditStatus}
                 {...register('status')}
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 disabled:opacity-50 disabled:bg-slate-100 transition-all appearance-none"
+                className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2.5 text-slate-700 dark:text-slate-300 font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 disabled:opacity-50 disabled:bg-slate-100 dark:bg-slate-800/50 transition-all appearance-none"
               >
                 <option value="To Do">To Do</option>
                 <option value="In Progress">In Progress</option>
@@ -158,11 +158,11 @@ const TaskModal = ({ isOpen, onClose, workspaceId, workspaceMembers, task }) => 
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1.5">Priority</label>
+              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Priority</label>
               <select 
                 disabled={!canEditPriority}
                 {...register('priority')}
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 disabled:opacity-50 disabled:bg-slate-100 transition-all appearance-none"
+                className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2.5 text-slate-700 dark:text-slate-300 font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 disabled:opacity-50 disabled:bg-slate-100 dark:bg-slate-800/50 transition-all appearance-none"
               >
                 <option value="Low">Low</option>
                 <option value="Medium">Medium</option>
@@ -171,21 +171,21 @@ const TaskModal = ({ isOpen, onClose, workspaceId, workspaceMembers, task }) => 
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1.5">Due Date</label>
+              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Due Date</label>
               <input 
                 type="date"
                 disabled={!canEdit}
                 {...register('dueDate')}
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 disabled:opacity-50 disabled:bg-slate-100 transition-all"
+                className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2.5 text-slate-700 dark:text-slate-300 font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 disabled:opacity-50 disabled:bg-slate-100 dark:bg-slate-800/50 transition-all"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1.5">Assignee</label>
+              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Assignee</label>
               <select 
                 disabled={!canEdit}
                 {...register('assignee')}
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 disabled:opacity-50 disabled:bg-slate-100 transition-all appearance-none"
+                className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2.5 text-slate-700 dark:text-slate-300 font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 disabled:opacity-50 disabled:bg-slate-100 dark:bg-slate-800/50 transition-all appearance-none"
               >
                 <option value="">Unassigned</option>
                 {workspaceMembers?.map(member => (
@@ -209,7 +209,7 @@ const TaskModal = ({ isOpen, onClose, workspaceId, workspaceMembers, task }) => 
             </div>
           )}
 
-          <div className="flex justify-between items-center mt-10 pt-6 border-t border-slate-100">
+          <div className="flex justify-between items-center mt-10 pt-6 border-t border-slate-100 dark:border-slate-800">
             <div>
               {canDelete && (
                 <button
@@ -230,7 +230,7 @@ const TaskModal = ({ isOpen, onClose, workspaceId, workspaceMembers, task }) => 
               <button 
                 type="button" 
                 onClick={onClose}
-                className="px-5 py-2.5 rounded-xl text-slate-600 font-medium hover:bg-slate-50 hover:text-slate-900 transition-colors"
+                className="px-5 py-2.5 rounded-xl text-slate-600 dark:text-slate-400 dark:text-slate-500 font-medium hover:bg-slate-50 dark:hover:bg-slate-800 dark:bg-slate-800 hover:text-slate-900 dark:text-white transition-colors"
               >
                 {canEditStatus ? 'Cancel' : 'Close'}
               </button>

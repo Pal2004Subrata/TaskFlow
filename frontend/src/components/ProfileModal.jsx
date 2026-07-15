@@ -104,18 +104,18 @@ const ProfileModal = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-slate-900/20 backdrop-blur-sm">
+    <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-slate-900/20 dark:bg-slate-950/60 backdrop-blur-sm transition-colors">
       <motion.div 
         initial={{ opacity: 0, scale: 0.95, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: 20 }}
-        className="bg-white border border-slate-200 rounded-3xl w-full max-w-2xl shadow-2xl flex flex-col md:flex-row overflow-hidden"
+        className="bg-white dark:bg-slate-900 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 dark:border-slate-800 rounded-3xl w-full max-w-2xl shadow-2xl flex flex-col md:flex-row overflow-hidden"
       >
         {/* Sidebar */}
-        <div className="w-full md:w-64 bg-slate-50 border-r border-slate-200 p-6 flex flex-col shrink-0">
+        <div className="w-full md:w-64 bg-slate-50 dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 p-6 flex flex-col shrink-0">
           <div className="flex justify-between items-center mb-8 md:mb-12">
-            <h2 className="text-xl font-bold text-slate-900">Settings</h2>
-            <button onClick={onClose} className="md:hidden p-1 hover:bg-slate-200 rounded-full text-slate-500">
+            <h2 className="text-xl font-bold text-slate-900 dark:text-white">Settings</h2>
+            <button onClick={onClose} className="md:hidden p-1 hover:bg-slate-200 rounded-full text-slate-500 dark:text-slate-400 dark:text-slate-500">
               <X className="w-5 h-5" />
             </button>
           </div>
@@ -123,13 +123,13 @@ const ProfileModal = ({ isOpen, onClose }) => {
           <nav className="flex flex-row md:flex-col gap-2">
             <button 
               onClick={() => { setActiveTab('profile'); setErrorMsg(''); setSuccessMsg(''); }}
-              className={`flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-colors ${activeTab === 'profile' ? 'bg-indigo-50 text-indigo-700' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'}`}
+              className={`flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-colors ${activeTab === 'profile' ? 'bg-indigo-50 dark:bg-indigo-500/20 text-indigo-700 dark:text-indigo-300' : 'text-slate-600 dark:text-slate-400 dark:text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 dark:bg-slate-800/50 hover:text-slate-900 dark:text-white'}`}
             >
               <UserIcon className="w-4 h-4" /> Profile
             </button>
             <button 
               onClick={() => { setActiveTab('security'); setErrorMsg(''); setSuccessMsg(''); }}
-              className={`flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-colors ${activeTab === 'security' ? 'bg-indigo-50 text-indigo-700' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'}`}
+              className={`flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-colors ${activeTab === 'security' ? 'bg-indigo-50 dark:bg-indigo-500/20 text-indigo-700 dark:text-indigo-300' : 'text-slate-600 dark:text-slate-400 dark:text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 dark:bg-slate-800/50 hover:text-slate-900 dark:text-white'}`}
             >
               <Shield className="w-4 h-4" /> Security
             </button>
@@ -138,7 +138,7 @@ const ProfileModal = ({ isOpen, onClose }) => {
 
         {/* Content */}
         <div className="flex-1 p-8 relative">
-          <button onClick={onClose} className="hidden md:flex absolute top-6 right-6 p-2 hover:bg-slate-100 rounded-full transition-colors text-slate-400 hover:text-slate-900">
+          <button onClick={onClose} className="hidden md:flex absolute top-6 right-6 p-2 hover:bg-slate-100 dark:hover:bg-slate-800 dark:bg-slate-800/50 rounded-full transition-colors text-slate-400 dark:text-slate-500 hover:text-slate-900 dark:text-white">
             <X className="w-5 h-5" />
           </button>
 
@@ -157,11 +157,11 @@ const ProfileModal = ({ isOpen, onClose }) => {
 
           {activeTab === 'profile' ? (
             <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
-              <h3 className="text-lg font-bold text-slate-900 mb-6">Profile Settings</h3>
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-6">Profile Settings</h3>
               
               <div className="mb-8 flex items-center gap-6">
                 <div className="relative group">
-                  <div className="w-24 h-24 rounded-full border-4 border-white shadow-md overflow-hidden bg-slate-100 flex items-center justify-center text-slate-400 text-3xl font-bold">
+                  <div className="w-24 h-24 rounded-full border-4 border-white shadow-md overflow-hidden bg-slate-100 dark:bg-slate-800/50 flex items-center justify-center text-slate-400 dark:text-slate-500 text-3xl font-bold">
                     {avatarPreview ? (
                       <img src={avatarPreview} alt="Avatar" className="w-full h-full object-cover" />
                     ) : (
@@ -184,8 +184,8 @@ const ProfileModal = ({ isOpen, onClose }) => {
                   />
                 </div>
                 <div>
-                  <h4 className="font-semibold text-slate-900">Profile Picture</h4>
-                  <p className="text-sm text-slate-500 mt-1">JPG, GIF or PNG. Max size of 5MB.</p>
+                  <h4 className="font-semibold text-slate-900 dark:text-white">Profile Picture</h4>
+                  <p className="text-sm text-slate-500 dark:text-slate-400 dark:text-slate-500 mt-1">JPG, GIF or PNG. Max size of 5MB.</p>
                   {avatarPreview && avatarPreview !== user.avatar && (
                     <button 
                       onClick={() => setAvatarPreview(user.avatar || '')}
@@ -199,20 +199,20 @@ const ProfileModal = ({ isOpen, onClose }) => {
 
               <form onSubmit={handleProfileSubmit(onProfileSubmit)} className="space-y-5">
                 <div>
-                  <label className="block text-sm font-semibold text-slate-700 mb-1.5">Full Name</label>
+                  <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Full Name</label>
                   <input 
                     type="text"
                     {...registerProfile('name')}
-                    className="w-full bg-slate-50/50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all placeholder:text-slate-400 shadow-sm"
+                    className="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2.5 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all placeholder:text-slate-400 dark:text-slate-500 shadow-sm"
                   />
                   {profileErrors.name && <p className="text-red-500 text-xs mt-1.5 font-medium">{profileErrors.name.message}</p>}
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold text-slate-700 mb-1.5">Email Address</label>
+                  <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Email Address</label>
                   <input 
                     type="email"
                     {...registerProfile('email')}
-                    className="w-full bg-slate-50/50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all placeholder:text-slate-400 shadow-sm"
+                    className="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2.5 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all placeholder:text-slate-400 dark:text-slate-500 shadow-sm"
                   />
                   {profileErrors.email && <p className="text-red-500 text-xs mt-1.5 font-medium">{profileErrors.email.message}</p>}
                 </div>
@@ -230,21 +230,21 @@ const ProfileModal = ({ isOpen, onClose }) => {
             </div>
           ) : (
             <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
-              <h3 className="text-lg font-bold text-slate-900 mb-6">Security & Password</h3>
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-6">Security & Password</h3>
               
               <form onSubmit={handlePasswordSubmit(onPasswordSubmit)} className="space-y-5">
                 <div>
-                  <label className="block text-sm font-semibold text-slate-700 mb-1.5">Current Password</label>
+                  <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Current Password</label>
                   <div className="relative">
                     <input 
                       type={showCurrentPassword ? "text" : "password"}
                       {...registerPassword('passwordCurrent')}
-                      className="w-full bg-slate-50/50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all placeholder:text-slate-400 shadow-sm pr-10"
+                      className="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2.5 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all placeholder:text-slate-400 dark:text-slate-500 shadow-sm pr-10"
                     />
                     <button
                       type="button"
                       onClick={() => setShowCurrentPassword(!showCurrentPassword)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:text-slate-400 dark:text-slate-500 transition-colors"
                     >
                       {showCurrentPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                     </button>
@@ -252,17 +252,17 @@ const ProfileModal = ({ isOpen, onClose }) => {
                   {passwordErrors.passwordCurrent && <p className="text-red-500 text-xs mt-1.5 font-medium">{passwordErrors.passwordCurrent.message}</p>}
                 </div>
                 <div className="pt-2">
-                  <label className="block text-sm font-semibold text-slate-700 mb-1.5">New Password</label>
+                  <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">New Password</label>
                   <div className="relative">
                     <input 
                       type={showNewPassword ? "text" : "password"}
                       {...registerPassword('password')}
-                      className="w-full bg-slate-50/50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all placeholder:text-slate-400 shadow-sm pr-10"
+                      className="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2.5 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all placeholder:text-slate-400 dark:text-slate-500 shadow-sm pr-10"
                     />
                     <button
                       type="button"
                       onClick={() => setShowNewPassword(!showNewPassword)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:text-slate-400 dark:text-slate-500 transition-colors"
                     >
                       {showNewPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                     </button>
