@@ -8,6 +8,9 @@ import WorkspaceView from './pages/WorkspaceView';
 import LandingPage from './pages/LandingPage';
 import AnalyticsDashboard from './pages/AnalyticsDashboard';
 import WorkflowBuilder from './pages/WorkflowBuilder';
+import Terms from './pages/Terms';
+import Privacy from './pages/Privacy';
+import Announcement from './pages/Announcement';
 
 const PageTransition = ({ children }) => {
   return (
@@ -45,6 +48,9 @@ function App() {
           <Route path="/login" element={<PublicRoute><PageTransition><Login /></PageTransition></PublicRoute>} />
           <Route path="/signup" element={<PublicRoute><PageTransition><Signup /></PageTransition></PublicRoute>} />
           <Route path="/" element={<PageTransition><LandingPage /></PageTransition>} />
+          <Route path="/terms" element={<PageTransition><Terms /></PageTransition>} />
+          <Route path="/privacy" element={<PageTransition><Privacy /></PageTransition>} />
+          <Route path="/announcement" element={<PageTransition><Announcement /></PageTransition>} />
           <Route 
             path="/dashboard" 
             element={

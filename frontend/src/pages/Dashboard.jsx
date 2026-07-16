@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Plus, Layout, Users, ArrowRight, Loader2, LogOut, Briefcase, Bell, Check, X, Moon, Sun, Menu } from 'lucide-react';
+import { Home, Plus, Layout, Users, ArrowRight, Loader2, LogOut, Briefcase, Bell, Check, X, Moon, Sun, Menu } from 'lucide-react';
 import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
@@ -70,15 +70,25 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white selection:bg-indigo-100 dark:selection:bg-indigo-900 selection:text-indigo-900 dark:selection:text-indigo-100 transition-colors">
+    <div className="relative min-h-screen bg-[#F8FAFC] dark:bg-[#020617] text-slate-900 dark:text-white selection:bg-indigo-100 dark:selection:bg-indigo-900 selection:text-indigo-900 dark:selection:text-indigo-100 transition-colors overflow-x-hidden">
+      {/* Soft Animated Background Mesh */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0 fixed">
+        <div className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vh] bg-indigo-400/20 dark:bg-indigo-600/10 rounded-full blur-[120px] mix-blend-multiply dark:mix-blend-lighten" />
+        <div className="absolute top-[20%] right-[-10%] w-[50vw] h-[50vh] bg-sky-400/20 dark:bg-sky-600/10 rounded-full blur-[120px] mix-blend-multiply dark:mix-blend-lighten" />
+        <div className="absolute bottom-[10%] left-[10%] w-[50vw] h-[50vh] bg-purple-400/20 dark:bg-purple-600/10 rounded-full blur-[120px] mix-blend-multiply dark:mix-blend-lighten" />
+      </div>
       {/* Top Navigation */}
       <nav className="bg-white dark:bg-slate-950/80 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 sticky top-0 z-40 transition-colors">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Logo className="h-14 w-auto text-slate-900 dark:text-white" />
+            <Link to="/">
+              <Logo className="h-14 w-auto text-slate-900 dark:text-white" />
+            </Link>
           </div>
           <div className="flex items-center gap-2 md:gap-4">
-            
+            <Link to="/" className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors" title="Go Home">
+              <Home className="w-5 h-5" />
+            </Link>
             <ThemeToggle className="mr-2 md:mr-4 hidden md:flex" />
             <NotificationsDropdown />
             <button 

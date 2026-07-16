@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Forum&display=swap');
 @custom-variant dark (&:is(.dark *));
 @import "tailwindcss";
 
@@ -18,10 +19,26 @@
     --scrollbar-thumb-hover: #94a3b8;
   }
   
-  html {
-    scroll-behavior: smooth;
-    background-color: var(--color-background);
-    scrollbar-width: none; /* Firefox */
+  .dark {
+    --scrollbar-bg: #0f172a;
+    --scrollbar-thumb: #334155;
+    --scrollbar-thumb-hover: #475569;
+  }
+
+  body {
+    background-color: #F8FAFC;
+    color: #0f172a;
+  }
+  
+  .dark body {
+    background-color: #020617;
+    color: #f8fafc;
+  }
+  
+  html, body {
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
   }
   
   html.dark {

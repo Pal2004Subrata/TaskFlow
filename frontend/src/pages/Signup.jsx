@@ -43,13 +43,16 @@ const Signup = () => {
   };
 
   return (
-    <div className="min-h-screen flex bg-white dark:bg-slate-950 font-sans transition-colors">
+    <div className="relative min-h-screen flex bg-[#F8FAFC] dark:bg-[#020617] font-sans transition-colors overflow-hidden">
+      {/* Soft Animated Background Mesh */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+        <div className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vh] bg-indigo-400/20 dark:bg-indigo-600/10 rounded-full blur-[120px] mix-blend-multiply dark:mix-blend-lighten" />
+        <div className="absolute top-[20%] right-[-10%] w-[50vw] h-[50vh] bg-sky-400/20 dark:bg-sky-600/10 rounded-full blur-[120px] mix-blend-multiply dark:mix-blend-lighten" />
+        <div className="absolute bottom-[10%] left-[10%] w-[50vw] h-[50vh] bg-purple-400/20 dark:bg-purple-600/10 rounded-full blur-[120px] mix-blend-multiply dark:mix-blend-lighten" />
+      </div>
+
       {/* Left Panel - Branding & Content */}
-      <div className="hidden lg:flex lg:w-1/2 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white dark:text-white p-12 flex-col justify-between relative overflow-hidden border-r border-slate-200 dark:border-slate-800 transition-colors">
-        {/* Decorative Backgrounds */}
-        <div className="absolute inset-0 bg-gradient-to-br from-indigo-50/80 via-slate-50 to-slate-50 dark:from-indigo-900/30 dark:via-slate-950 dark:to-slate-950 z-0"></div>
-        <div className="absolute top-[-20%] left-[-10%] w-[70%] h-[70%] bg-indigo-200/40 dark:bg-indigo-600/20 rounded-full blur-[120px] mix-blend-multiply dark:mix-blend-normal z-0"></div>
-        <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] bg-blue-200/40 dark:bg-blue-600/20 rounded-full blur-[100px] mix-blend-multiply dark:mix-blend-normal z-0"></div>
+      <div className="hidden lg:flex lg:w-1/2 text-slate-900 dark:text-white dark:text-white p-12 flex-col justify-between relative overflow-hidden border-r border-slate-200/50 dark:border-slate-800/50 transition-colors">
         
         {/* Logo */}
         <Link to="/" className="relative z-10 flex items-center gap-2.5 hover:opacity-90 transition-opacity">
@@ -92,7 +95,7 @@ const Signup = () => {
       </div>
 
       {/* Right Panel - Signup Form */}
-      <div className="w-full lg:w-1/2 flex flex-col p-4 lg:p-12 justify-center relative bg-slate-50/30 dark:bg-slate-950 transition-colors">
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 relative z-10 bg-white/40 dark:bg-[#020617]/40 backdrop-blur-xl transition-colors">
          <div className="absolute top-8 left-8 right-8 lg:left-12 lg:right-12 flex justify-between items-center z-20">
             <Link to="/" className="text-slate-500 hover:text-slate-900 dark:text-white dark:text-slate-400 dark:hover:text-white flex items-center gap-2 text-sm font-medium transition-colors group">
               <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back to Home

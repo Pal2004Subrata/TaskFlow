@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, Plus, Search, Loader2, Trash2, UserPlus, Calendar, CheckSquare, Clock, Command, CheckCircle2, X, Moon, Sun, Menu } from 'lucide-react';
+import { ArrowLeft, Home, Plus, Search, Loader2, Trash2, UserPlus, Calendar, CheckSquare, Clock, Command, CheckCircle2, X, Moon, Sun, Menu } from 'lucide-react';
 import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
@@ -178,13 +178,22 @@ const WorkspaceView = () => {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white pb-20 transition-colors">
+    <div className="relative min-h-screen bg-[#F8FAFC] dark:bg-[#020617] text-slate-900 dark:text-white pb-20 transition-colors overflow-x-hidden">
+      {/* Soft Animated Background Mesh */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0 fixed">
+        <div className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vh] bg-indigo-400/20 dark:bg-indigo-600/10 rounded-full blur-[120px] mix-blend-multiply dark:mix-blend-lighten" />
+        <div className="absolute top-[20%] right-[-10%] w-[50vw] h-[50vh] bg-sky-400/20 dark:bg-sky-600/10 rounded-full blur-[120px] mix-blend-multiply dark:mix-blend-lighten" />
+        <div className="absolute bottom-[10%] left-[10%] w-[50vw] h-[50vh] bg-purple-400/20 dark:bg-purple-600/10 rounded-full blur-[120px] mix-blend-multiply dark:mix-blend-lighten" />
+      </div>
       {/* Workspace Header - Top nav */}
       <div className="bg-white dark:bg-slate-950/80 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 sticky top-0 z-30 shadow-sm transition-colors">
         <div className="max-w-7xl mx-auto px-6 py-4 flex flex-row justify-between items-center gap-4">
           <div className="flex items-center gap-4">
             <Link to="/dashboard" className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-slate-500 dark:text-slate-400 dark:text-slate-400 dark:hover:text-white transition-colors">
               <ArrowLeft className="w-5 h-5" />
+            </Link>
+            <Link to="/" className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-slate-500 dark:text-slate-400 dark:text-slate-400 dark:hover:text-white transition-colors" title="Go Home">
+              <Home className="w-5 h-5" />
             </Link>
             <div>
               <h1 className="text-xl font-bold text-slate-900 dark:text-white tracking-tight truncate max-w-[150px] md:max-w-md">{workspace?.name}</h1>

@@ -68,11 +68,14 @@ const LandingPage = () => {
   const currentData = tabs[activeTab];
 
   return (
-    <div className="relative w-full min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans selection:bg-primary/20 selection:text-primary overflow-x-hidden">
-      {/* Decorative Blur Backgrounds */}
-      <div className="absolute top-0 left-0 w-full h-[500px] bg-gradient-to-b from-indigo-50 dark:from-indigo-900/30 dark:via-purple-900/10 to-transparent -z-10" />
-      <div className="absolute -top-[20%] -left-[10%] w-[50%] h-[50%] bg-blue-100 dark:bg-indigo-600 rounded-full blur-[120px] opacity-60 dark:opacity-20 -z-10" />
-      <div className="absolute top-[10%] -right-[10%] w-[40%] h-[40%] bg-indigo-100 dark:bg-purple-600 rounded-full blur-[120px] opacity-60 dark:opacity-20 -z-10" />
+    <div className="relative w-full min-h-screen bg-[#F8FAFC] dark:bg-[#020617] text-slate-900 dark:text-slate-100 font-sans selection:bg-indigo-500/30 overflow-x-hidden">
+      
+      {/* Soft Animated Background Mesh */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0 fixed">
+        <div className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vh] bg-indigo-400/20 dark:bg-indigo-600/10 rounded-full blur-[120px] mix-blend-multiply dark:mix-blend-lighten" />
+        <div className="absolute top-[20%] right-[-10%] w-[50vw] h-[50vh] bg-sky-400/20 dark:bg-sky-600/10 rounded-full blur-[120px] mix-blend-multiply dark:mix-blend-lighten" />
+        <div className="absolute bottom-[10%] left-[10%] w-[50vw] h-[50vh] bg-purple-400/20 dark:bg-purple-600/10 rounded-full blur-[120px] mix-blend-multiply dark:mix-blend-lighten" />
+      </div>
 
       {/* Navbar */}
       <nav className="sticky top-0 z-50 bg-white/70 dark:bg-slate-950/70 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-800/50">
@@ -187,14 +190,14 @@ const LandingPage = () => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-slate-200 text-sm font-medium text-slate-600 mb-8 shadow-sm"
+            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-sm font-medium text-slate-600 dark:text-slate-300 mb-8 shadow-sm"
           >
             <span className="flex h-2 w-2 relative">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
             </span>
             TaskFlow 2.0 is now live
-            <Link to="/signup" className="text-indigo-600 dark:text-indigo-400 flex items-center hover:underline ml-1">
+            <Link to="/announcement" className="text-indigo-600 dark:text-indigo-400 flex items-center hover:underline ml-1">
               Read announcement <ArrowUpRight className="w-3 h-3 ml-0.5" />
             </Link>
           </motion.div>
@@ -435,8 +438,8 @@ const LandingPage = () => {
         </motion.div>
       </section>
 
-      {/* Features Grid */}
-      <section id="features" className="py-24 bg-white dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800">
+      {/* Features Section */}
+      <section id="features" className="relative z-10 py-24 border-t border-slate-200/50 dark:border-slate-800/50">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16 max-w-2xl mx-auto">
             <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-4">Everything you need to ship faster</h2>
@@ -489,7 +492,7 @@ const LandingPage = () => {
       </section>
 
       {/* Solutions Section */}
-      <section id="solutions" className="py-24 bg-slate-50 dark:bg-slate-900/40 border-t border-slate-200 dark:border-slate-800">
+      <section id="solutions" className="relative z-10 py-24 border-t border-slate-200/50 dark:border-slate-800/50">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16 max-w-2xl mx-auto">
             <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-4">Built for every team</h2>
@@ -528,7 +531,7 @@ const LandingPage = () => {
       </section>
 
       {/* Resources Section */}
-      <section id="resources" className="py-24 bg-white dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800">
+      <section id="resources" className="relative z-10 py-24 border-t border-slate-200/50 dark:border-slate-800/50">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
             <div className="max-w-2xl">
@@ -543,6 +546,7 @@ const LandingPage = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
              <div className="group cursor-pointer">
                <div className="bg-slate-100 dark:bg-slate-800 aspect-video rounded-xl mb-4 overflow-hidden relative">
+                  <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=600&q=80" alt="Team working" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
                   <div className="absolute inset-0 bg-gradient-to-tr from-indigo-50 dark:from-indigo-900/30 dark:via-purple-900/100/20 to-blue-500/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                </div>
                <div className="text-xs font-semibold text-indigo-600 mb-2 uppercase tracking-wide">Blog</div>
@@ -551,6 +555,7 @@ const LandingPage = () => {
              </div>
              <div className="group cursor-pointer">
                <div className="bg-slate-100 dark:bg-slate-800 aspect-video rounded-xl mb-4 overflow-hidden relative">
+                  <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=600&q=80" alt="Laptop desk" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
                   <div className="absolute inset-0 bg-gradient-to-tr from-purple-500/20 to-pink-500/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                </div>
                <div className="text-xs font-semibold text-purple-600 mb-2 uppercase tracking-wide">Guide</div>
@@ -559,6 +564,7 @@ const LandingPage = () => {
              </div>
              <div className="group cursor-pointer">
                <div className="bg-slate-100 dark:bg-slate-800 aspect-video rounded-xl mb-4 overflow-hidden relative">
+                  <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=600&q=80" alt="Business meeting" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
                   <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500/20 to-teal-500/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                </div>
                <div className="text-xs font-semibold text-emerald-600 mb-2 uppercase tracking-wide">Customer Story</div>
@@ -567,6 +573,7 @@ const LandingPage = () => {
              </div>
              <div className="group cursor-pointer">
                <div className="bg-slate-100 dark:bg-slate-800 aspect-video rounded-xl mb-4 overflow-hidden relative">
+                  <img src="https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=600&q=80" alt="Webinar" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
                   <div className="absolute inset-0 bg-gradient-to-tr from-amber-500/20 to-orange-500/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                </div>
                <div className="text-xs font-semibold text-amber-600 mb-2 uppercase tracking-wide">Webinar</div>
@@ -589,19 +596,19 @@ const LandingPage = () => {
           >
             Get started for free <ArrowRight className="w-5 h-5" />
           </Link>
-          <p className="mt-6 text-slate-400 text-sm">No credit card required. Free forever on the starter plan.</p>
+          <p className="mt-6 text-slate-400 text-sm">No credit card required. Completely free forever.</p>
         </div>
       </section>
       
       {/* Footer */}
-      <footer className="bg-slate-50 dark:bg-slate-900/40 py-12 border-t border-slate-200 dark:border-slate-800">
+      <footer className="relative z-10 py-12 border-t border-slate-200/50 dark:border-slate-800/50">
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex items-center gap-2">
-            <Logo className="h-10 w-auto text-slate-900 dark:text-white" />
+            <Logo className="h-14 w-auto text-slate-900 dark:text-white" />
           </div>
           <div className="flex gap-6 text-sm font-medium text-slate-500 dark:text-slate-400 dark:text-slate-500">
-            <a href="#" className="hover:text-slate-900 dark:hover:text-white transition-colors">Privacy</a>
-            <a href="#" className="hover:text-slate-900 dark:hover:text-white transition-colors">Terms</a>
+            <Link to="/privacy" className="hover:text-slate-900 dark:hover:text-white transition-colors">Privacy</Link>
+            <Link to="/terms" className="hover:text-slate-900 dark:hover:text-white transition-colors">Terms</Link>
             <a href="#" className="hover:text-slate-900 dark:hover:text-white transition-colors">Twitter</a>
             <a href="#" className="hover:text-slate-900 dark:hover:text-white transition-colors">GitHub</a>
           </div>

@@ -19,7 +19,7 @@ export default function Logo({ className = "h-10 w-auto" }) {
         </g>
         <text x="240" y="150" className="tf-word" fontSize="56" fill="currentColor" letterSpacing="-1.5" fontWeight="800">Task<tspan fill="#E2A63B" fontStyle="italic" fontWeight="600">Flow</tspan></text>
         <path d="M 240 168 C 320 178, 400 178, 470 166 S 590 156, 660 168" fill="none" stroke="#E2A63B" strokeWidth="2.5" strokeLinecap="round" />
-        <text x="150" y="215" className="tf-mono" fontSize="24" fill="#64708A" letterSpacing="1">WORK, IN MOTION</text>
+        <text x="150" y="215" className="tf-mono fill-slate-500 dark:fill-slate-300" fontSize="24" letterSpacing="1">WORK, IN MOTION</text>
       </g>
     </svg>
   );
