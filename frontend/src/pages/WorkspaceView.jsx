@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, Plus, Search, Loader2, Trash2, UserPlus, Calendar, CheckSquare, Clock, Command, CheckCircle2, X, Moon, Sun } from 'lucide-react';
+import { ArrowLeft, Plus, Search, Loader2, Trash2, UserPlus, Calendar, CheckSquare, Clock, Command, CheckCircle2, X, Moon, Sun, Menu } from 'lucide-react';
 import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
@@ -31,9 +31,10 @@ const WorkspaceView = () => {
   const [isMembersModalOpen, setIsMembersModalOpen] = useState(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('tasks');
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Debounce search
-  useState(() => {
+  useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedSearch(search);
       setPage(1);
@@ -180,22 +181,22 @@ const WorkspaceView = () => {
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white pb-20 transition-colors">
       {/* Workspace Header - Top nav */}
       <div className="bg-white dark:bg-slate-950/80 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 sticky top-0 z-30 shadow-sm transition-colors">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div className="max-w-7xl mx-auto px-6 py-4 flex flex-row justify-between items-center gap-4">
           <div className="flex items-center gap-4">
             <Link to="/dashboard" className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-slate-500 dark:text-slate-400 dark:text-slate-400 dark:hover:text-white transition-colors">
               <ArrowLeft className="w-5 h-5" />
             </Link>
             <div>
-              <h1 className="text-xl font-bold text-slate-900 dark:text-white tracking-tight">{workspace?.name}</h1>
+              <h1 className="text-xl font-bold text-slate-900 dark:text-white tracking-tight truncate max-w-[150px] md:max-w-md">{workspace?.name}</h1>
               <div className="flex items-center gap-3 text-xs font-medium text-slate-500 dark:text-slate-400 mt-0.5">
                 <span className="flex items-center gap-1"><UserPlus className="w-3 h-3" /> {workspace?.members.length} Members</span>
-                <span className="w-1 h-1 rounded-full bg-slate-300 dark:bg-slate-600"></span>
-                <span>Admin: {workspace?.owner.name}</span>
+                <span className="hidden md:block w-1 h-1 rounded-full bg-slate-300 dark:bg-slate-600"></span>
+                <span className="hidden md:block">Admin: {workspace?.owner.name}</span>
               </div>
             </div>
           </div>
 
-          <div className="flex items-center gap-3 w-full md:w-auto">
+          <div className="flex items-center gap-3">
             
             <ThemeToggle className="mr-2 md:mr-4 hidden md:flex" />
             <NotificationsDropdown />
@@ -203,7 +204,7 @@ const WorkspaceView = () => {
               <>
                 <button 
                   onClick={() => setIsInviteOpen(true)}
-                  className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2"
+                  className="hidden md:flex bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 px-4 py-2 rounded-lg text-sm font-medium transition-colors items-center gap-2"
                 >
                   <UserPlus className="w-4 h-4" /> Invite
                 </button>
@@ -219,13 +220,62 @@ const WorkspaceView = () => {
                 </button>
               </>
             )}
+            <button 
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="md:hidden p-2 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 transition-colors"
+            >
+              {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
           </div>
         </div>
+
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              className="md:hidden border-t border-slate-200 dark:border-slate-800 overflow-hidden bg-white dark:bg-slate-950"
+            >
+              <div className="p-4 flex flex-col gap-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium text-slate-700 dark:text-slate-200">Theme</span>
+                  <ThemeToggle />
+                </div>
+                {workspace?.owner._id === user?._id && (
+                  <>
+                    <button 
+                      onClick={() => {
+                        setIsInviteOpen(true);
+                        setIsMobileMenuOpen(false);
+                      }}
+                      className="flex items-center gap-3 text-slate-700 dark:text-slate-200 text-sm font-medium transition-opacity w-full text-left p-2 bg-slate-50 dark:bg-slate-900 rounded-lg"
+                    >
+                      <UserPlus className="w-4 h-4" /> Invite Members
+                    </button>
+                    <button 
+                      onClick={() => {
+                        if(window.confirm('Are you sure you want to delete this workspace and ALL its tasks?')) {
+                          deleteWorkspaceMutation.mutate();
+                        }
+                      }}
+                      className="flex items-center gap-3 text-red-600 dark:text-red-400 text-sm font-medium transition-opacity w-full text-left p-2 bg-red-50 dark:bg-red-900/20 rounded-lg"
+                    >
+                      <Trash2 className="w-4 h-4" /> Delete Workspace
+                    </button>
+                  </>
+                )}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       <div className="max-w-7xl mx-auto px-6 mt-8">
         {/* Tabs */}
-        <div className="flex items-center gap-4 border-b border-slate-200 dark:border-slate-800 mb-6">
+        <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 mb-6">
+          <div className="flex items-center gap-4">
+
           <button
             onClick={() => setActiveTab('tasks')}
             className={`pb-3 text-sm font-semibold transition-colors border-b-2 ${activeTab === 'tasks' ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300'}`}
@@ -244,6 +294,15 @@ const WorkspaceView = () => {
               </span>
             )}
           </button>
+          </div>
+          <div className="flex items-center gap-3 pb-2">
+            <Link to={`/workspace/${workspaceId}/analytics`} className="px-3 py-1.5 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 text-sm font-medium rounded-lg hover:bg-indigo-100 dark:hover:bg-indigo-900/50 transition">
+              Analytics
+            </Link>
+            <Link to={`/workspace/${workspaceId}/workflows`} className="px-3 py-1.5 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 text-sm font-medium rounded-lg hover:bg-emerald-100 dark:hover:bg-emerald-900/50 transition">
+              Automations
+            </Link>
+          </div>
         </div>
         
         {activeTab === 'chat' ? (

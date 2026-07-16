@@ -3,13 +3,14 @@ import { Link } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
 import ThemeToggle from '../components/ThemeToggle';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, CheckCircle2, Zap, LayoutDashboard, Shield, Users, ArrowUpRight, BarChart3, RefreshCw, Search, Plus, Command, Moon, Sun } from 'lucide-react';
+import { ArrowRight, CheckCircle2, Zap, LayoutDashboard, Shield, Users, ArrowUpRight, BarChart3, RefreshCw, Search, Plus, Command, Moon, Sun, Menu, X } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import Logo from '../components/Logo';
 
 const LandingPage = () => {
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState('Q3 Roadmap');
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { isDarkMode, toggleTheme } = useTheme();
 
   useEffect(() => {
@@ -95,12 +96,12 @@ const LandingPage = () => {
             </a>
           </div>
 
-          <div className="flex items-center gap-4">
-            <ThemeToggle className="" />
+          <div className="flex items-center gap-3">
+            <ThemeToggle className="hidden md:flex" />
             {user ? (
               <Link 
                 to="/dashboard"
-                className="group bg-slate-900 dark:bg-indigo-600 hover:bg-slate-800 dark:hover:bg-indigo-500 text-white px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 hover:scale-105 shadow-md flex items-center gap-1.5"
+                className="hidden md:flex group bg-slate-900 dark:bg-indigo-600 hover:bg-slate-800 dark:hover:bg-indigo-500 text-white px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 hover:scale-105 shadow-md items-center gap-1.5"
               >
                 Dashboard <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
               </Link>
@@ -108,20 +109,76 @@ const LandingPage = () => {
               <>
                 <Link 
                   to="/login"
-                  className="hidden md:block text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-slate-800 font-medium text-sm px-4 py-2 rounded-lg transition-all duration-300 hover:scale-105"
+                  className="hidden md:block bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-medium text-sm px-5 py-2 rounded-full transition-all duration-300 hover:scale-105 shadow-sm"
                 >
                   Log in
                 </Link>
                 <Link 
                   to="/signup"
-                  className="group bg-slate-900 dark:bg-indigo-600 hover:bg-slate-800 dark:hover:bg-indigo-500 text-white px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 hover:scale-105 hover:shadow-lg dark:hover:shadow-indigo-500/50 shadow-md shadow-slate-900/10 dark:shadow-indigo-500/20 flex items-center gap-1.5"
+                  className="hidden md:flex group bg-slate-900 dark:bg-indigo-600 hover:bg-slate-800 dark:hover:bg-indigo-500 text-white px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 hover:scale-105 hover:shadow-lg dark:hover:shadow-indigo-500/50 shadow-md shadow-slate-900/10 dark:shadow-indigo-500/20 items-center gap-1.5"
                 >
                   Get Started <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
                 </Link>
               </>
             )}
+            <button 
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="md:hidden p-2 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 transition-colors"
+            >
+              {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
           </div>
         </div>
+
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              className="md:hidden border-t border-slate-200 dark:border-slate-800 overflow-hidden bg-white dark:bg-slate-950"
+            >
+              <div className="p-6 flex flex-col gap-6">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium text-slate-700 dark:text-slate-200">Theme</span>
+                  <ThemeToggle />
+                </div>
+                
+                <div className="flex flex-col gap-4">
+                  <a href="#features" onClick={() => setIsMobileMenuOpen(false)} className="text-lg font-medium text-slate-700 dark:text-slate-200">Features</a>
+                  <a href="#solutions" onClick={() => setIsMobileMenuOpen(false)} className="text-lg font-medium text-slate-700 dark:text-slate-200">Solutions</a>
+                  <a href="#resources" onClick={() => setIsMobileMenuOpen(false)} className="text-lg font-medium text-slate-700 dark:text-slate-200">Resources</a>
+                </div>
+
+                <div className="h-px bg-slate-200 dark:bg-slate-800 w-full my-2"></div>
+
+                {user ? (
+                  <Link 
+                    to="/dashboard"
+                    className="w-full text-center bg-slate-900 dark:bg-indigo-600 text-white px-5 py-3 rounded-xl font-medium"
+                  >
+                    Go to Dashboard
+                  </Link>
+                ) : (
+                  <div className="flex flex-col gap-3">
+                    <Link 
+                      to="/login"
+                      className="w-full text-center bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 px-5 py-3 rounded-xl font-medium"
+                    >
+                      Log in
+                    </Link>
+                    <Link 
+                      to="/signup"
+                      className="w-full text-center bg-slate-900 dark:bg-indigo-600 text-white px-5 py-3 rounded-xl font-medium shadow-md"
+                    >
+                      Get Started
+                    </Link>
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </nav>
 
       {/* Hero Section */}
@@ -163,10 +220,10 @@ const LandingPage = () => {
             TaskFlow brings all your teams, tasks, and tools into one unified workspace. Designed for speed, engineered for scale, and built for modern teams.
           </motion.p>
           
-          <motion.div
+          <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
+            transition={{ delay: 0.3, duration: 0.8 }}
             className="flex flex-col sm:flex-row items-center justify-center gap-4"
           >
             <Link 
@@ -178,6 +235,19 @@ const LandingPage = () => {
             <button className="w-full sm:w-auto bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 px-8 py-3.5 rounded-full text-base font-medium transition-all shadow-sm">
               Book a demo
             </button>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5, duration: 0.8 }}
+            className="mt-6 text-sm text-slate-500 dark:text-slate-400 text-center flex flex-col sm:flex-row items-center justify-center gap-2"
+          >
+            <span>Or speak directly to our team:</span>
+            <div className="flex items-center gap-3">
+              <a href="mailto:sales@taskflow.com" className="font-medium text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">sales@taskflow.com</a>
+              <span className="text-slate-300 dark:text-slate-700">•</span>
+              <a href="tel:+18001234567" className="font-medium text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">+91 7001681546</a>
+            </div>
           </motion.div>
         </div>
       </section>
@@ -254,9 +324,9 @@ const LandingPage = () => {
                         <h2 className="text-lg font-bold text-slate-800 dark:text-white">{activeTab}</h2>
                         <div className="h-4 w-px bg-slate-300 dark:bg-slate-700"></div>
                         <div className="flex -space-x-2">
-                          <div className="w-7 h-7 rounded-full bg-indigo-100 dark:bg-indigo-900 border-2 border-white dark:border-slate-950 flex items-center justify-center text-[10px] font-bold text-indigo-700 dark:text-indigo-300 z-10">JS</div>
-                          <div className="w-7 h-7 rounded-full bg-emerald-100 dark:bg-emerald-900 border-2 border-white dark:border-slate-950 flex items-center justify-center text-[10px] font-bold text-emerald-700 dark:text-emerald-300 z-20">MR</div>
-                          <div className="w-7 h-7 rounded-full bg-amber-100 dark:bg-amber-900 border-2 border-white dark:border-slate-950 flex items-center justify-center text-[10px] font-bold text-amber-700 dark:text-amber-300 z-30">AL</div>
+                          <div className="w-7 h-7 rounded-full bg-indigo-100 dark:bg-indigo-500/20 border-2 border-white dark:border-slate-950 flex items-center justify-center text-[10px] font-bold text-indigo-700 dark:text-indigo-200 z-10">JS</div>
+                          <div className="w-7 h-7 rounded-full bg-emerald-100 dark:bg-emerald-500/20 border-2 border-white dark:border-slate-950 flex items-center justify-center text-[10px] font-bold text-emerald-700 dark:text-emerald-200 z-20">MR</div>
+                          <div className="w-7 h-7 rounded-full bg-amber-100 dark:bg-amber-500/20 border-2 border-white dark:border-slate-950 flex items-center justify-center text-[10px] font-bold text-amber-700 dark:text-amber-200 z-30">AL</div>
                         </div>
                      </div>
                      <div className="flex items-center gap-3">
@@ -301,7 +371,7 @@ const LandingPage = () => {
                                 className="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 p-4 rounded-xl shadow-sm dark:shadow-none hover:shadow-md hover:border-slate-300 dark:hover:border-slate-700 transition-all cursor-pointer shrink-0 group"
                               >
                                 <div className={`text-[10px] font-bold px-2.5 py-1 rounded-md flex w-max mb-3 ring-1 ring-inset ${task.tagColor}`}>{task.tag}</div>
-                                <p className="text-sm font-semibold text-slate-800 mb-4 group-hover:text-slate-900 dark:hover:text-white leading-snug transition-colors">{task.title}</p>
+                                <p className="text-sm font-semibold text-slate-800 dark:text-slate-200 mb-4 group-hover:text-slate-900 dark:hover:text-white leading-snug transition-colors">{task.title}</p>
                                 <div className="flex justify-between items-center mt-auto">
                                   <div className="flex -space-x-1.5">
                                       <div className="w-5 h-5 rounded-full bg-slate-100 dark:bg-slate-800 border border-white dark:border-slate-950"></div>
@@ -338,7 +408,7 @@ const LandingPage = () => {
                                 className="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 p-4 rounded-xl shadow-sm dark:shadow-none hover:shadow-md hover:border-slate-300 dark:hover:border-slate-700 transition-all cursor-pointer shrink-0 group"
                               >
                                 <div className={`text-[10px] font-bold px-2.5 py-1 rounded-md flex w-max mb-3 ring-1 ring-inset ${task.tagColor}`}>{task.tag}</div>
-                                <p className="text-sm font-semibold text-slate-800 mb-4 group-hover:text-slate-900 dark:hover:text-white leading-snug transition-colors">{task.title}</p>
+                                <p className="text-sm font-semibold text-slate-800 dark:text-slate-200 mb-4 group-hover:text-slate-900 dark:hover:text-white leading-snug transition-colors">{task.title}</p>
                                 <div className="flex justify-between items-center mt-auto">
                                   <div className="flex -space-x-1.5">
                                       <div className="w-5 h-5 rounded-full bg-indigo-500/20 border border-slate-900 dark:border-slate-950 flex items-center justify-center text-[8px] font-bold text-indigo-700 dark:text-indigo-300">JS</div>

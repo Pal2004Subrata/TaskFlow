@@ -75,7 +75,7 @@ const Signup = () => {
                 </div>
                 <p className="text-slate-700 dark:text-slate-300 dark:text-slate-300 mb-6 font-medium leading-relaxed">"Setting up TaskFlow took minutes. By the end of the week, our entire company was using it to track every major initiative."</p>
                 <div className="flex items-center gap-3 justify-center text-left">
-                   <div className="w-10 h-10 bg-blue-100 border border-blue-200 rounded-full flex items-center justify-center text-blue-600 font-bold text-sm">MR</div>
+                   <div className="w-10 h-10 bg-blue-100 dark:bg-blue-500/20 border border-blue-200 dark:border-blue-500/30 rounded-full flex items-center justify-center text-blue-600 dark:text-blue-200 font-bold text-sm">MR</div>
                    <div>
                       <div className="font-semibold text-sm text-slate-900 dark:text-white">Marcus Rowe</div>
                       <div className="text-xs text-slate-500">Product Lead at StartupX</div>

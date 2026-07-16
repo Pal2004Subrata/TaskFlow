@@ -6,6 +6,8 @@ import Signup from './pages/Signup';
 import Dashboard from './pages/Dashboard';
 import WorkspaceView from './pages/WorkspaceView';
 import LandingPage from './pages/LandingPage';
+import AnalyticsDashboard from './pages/AnalyticsDashboard';
+import WorkflowBuilder from './pages/WorkflowBuilder';
 
 const PageTransition = ({ children }) => {
   return (
@@ -56,6 +58,22 @@ function App() {
             element={
               <ProtectedRoute>
                 <PageTransition><WorkspaceView /></PageTransition>
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/workspace/:id/analytics" 
+            element={
+              <ProtectedRoute>
+                <PageTransition><AnalyticsDashboard /></PageTransition>
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/workspace/:id/workflows" 
+            element={
+              <ProtectedRoute>
+                <PageTransition><WorkflowBuilder /></PageTransition>
               </ProtectedRoute>
             } 
           />

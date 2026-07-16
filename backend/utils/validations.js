@@ -18,8 +18,8 @@ export const workspaceSchema = z.object({
 export const taskSchema = z.object({
   title: z.string().min(1, 'Task title is required'),
   description: z.string().optional(),
-  status: z.enum(['To Do', 'In Progress', 'Done']).optional(),
-  priority: z.enum(['Low', 'Medium', 'High']).optional(),
+  status: z.enum(['To Do', 'In Progress', 'Done', 'Blocked', 'Cancelled']).optional(),
+  priority: z.enum(['Low', 'Medium', 'High', 'Critical']).optional(),
   dueDate: z.string().datetime().optional().or(z.literal('')),
   assignee: z.string().regex(/^[0-9a-fA-F]{24}$/, 'Invalid assignee ID').optional().or(z.literal('')),
   workspace: z.string().regex(/^[0-9a-fA-F]{24}$/, 'Invalid workspace ID'),
@@ -28,8 +28,8 @@ export const taskSchema = z.object({
 export const taskUpdateSchema = z.object({
   title: z.string().min(1, 'Task title is required').optional(),
   description: z.string().optional(),
-  status: z.enum(['To Do', 'In Progress', 'Done']).optional(),
-  priority: z.enum(['Low', 'Medium', 'High']).optional(),
+  status: z.enum(['To Do', 'In Progress', 'Done', 'Blocked', 'Cancelled']).optional(),
+  priority: z.enum(['Low', 'Medium', 'High', 'Critical']).optional(),
   dueDate: z.string().datetime().optional().or(z.literal('')),
   assignee: z.string().regex(/^[0-9a-fA-F]{24}$/, 'Invalid assignee ID').optional().or(z.literal('')),
 });

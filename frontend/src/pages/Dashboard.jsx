@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Plus, Layout, Users, ArrowRight, Loader2, LogOut, Briefcase, Bell, Check, X, Moon, Sun } from 'lucide-react';
+import { Plus, Layout, Users, ArrowRight, Loader2, LogOut, Briefcase, Bell, Check, X, Moon, Sun, Menu } from 'lucide-react';
 import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
@@ -24,6 +24,7 @@ const Dashboard = () => {
   const queryClient = useQueryClient();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const { data: workspaces, isLoading } = useQuery({
     queryKey: ['workspaces'],
@@ -78,7 +79,7 @@ const Dashboard = () => {
           </div>
           <div className="flex items-center gap-2 md:gap-4">
             
-            <ThemeToggle className="mr-2 md:mr-4" />
+            <ThemeToggle className="mr-2 md:mr-4 hidden md:flex" />
             <NotificationsDropdown />
             <button 
               onClick={() => setIsProfileModalOpen(true)}
@@ -95,13 +96,59 @@ const Dashboard = () => {
             </button>
             <button 
               onClick={logout}
-              className="text-slate-500 dark:text-slate-400 hover:text-slate-900 text-sm font-medium transition-colors flex items-center gap-2"
+              className="text-slate-500 dark:text-slate-400 hover:text-slate-900 text-sm font-medium transition-colors hidden md:flex items-center gap-2"
             >
               <LogOut className="w-4 h-4" />
               Sign out
             </button>
+            <button 
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="md:hidden p-2 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 transition-colors"
+            >
+              {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
           </div>
         </div>
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              className="md:hidden border-t border-slate-200 dark:border-slate-800 overflow-hidden bg-white dark:bg-slate-950"
+            >
+              <div className="p-4 flex flex-col gap-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium text-slate-700 dark:text-slate-200">Theme</span>
+                  <ThemeToggle />
+                </div>
+                <button 
+                  onClick={() => {
+                    setIsProfileModalOpen(true);
+                    setIsMobileMenuOpen(false);
+                  }}
+                  className="flex items-center gap-3 hover:opacity-80 transition-opacity w-full text-left"
+                >
+                  <div className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-600 dark:text-slate-300 font-medium text-sm overflow-hidden relative shrink-0">
+                    {user?.avatar ? (
+                      <img src={user.avatar} alt="Profile" className="w-full h-full object-cover" />
+                    ) : (
+                      user?.name?.charAt(0).toUpperCase()
+                    )}
+                  </div>
+                  <span className="text-sm font-medium text-slate-700 dark:text-slate-200">Profile</span>
+                </button>
+                <button 
+                  onClick={logout}
+                  className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-sm font-medium transition-colors flex items-center gap-2 w-full text-left"
+                >
+                  <LogOut className="w-4 h-4" />
+                  Sign out
+                </button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </nav>
 
       <main className="p-6 md:p-8 max-w-7xl mx-auto">

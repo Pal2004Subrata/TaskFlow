@@ -6,6 +6,8 @@ import dotenv from 'dotenv';
 import authRoutes from './routes/auth.js';
 import workspaceRoutes from './routes/workspace.js';
 import taskRoutes from './routes/task.js';
+import analyticsRoutes from './routes/analytics.js';
+import workflowRoutes from './routes/workflow.js';
 import { globalErrorHandler } from './middlewares/error.js';
 import AppError from './utils/AppError.js';
 import scheduleDeadlineReminders from './jobs/deadlineReminders.js';
@@ -26,6 +28,8 @@ app.use(express.json({ limit: '10mb' })); // Body parser
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/workspaces', workspaceRoutes);
 app.use('/api/v1/tasks', taskRoutes);
+app.use('/api/v1/analytics', analyticsRoutes);
+app.use('/api/v1/workflows', workflowRoutes);
 
 // Unhandled Routes
 app.use((req, res, next) => {
@@ -43,10 +47,15 @@ mongoose.connect(DB).then(() => {
   scheduleDeadlineReminders();
 });
 
+import { initSocket } from './socket.js';
+
 const port = process.env.PORT || 5001;
 const server = app.listen(port, () => {
   console.log(`App running on port ${port}...`);
 });
+
+// Initialize Socket.io
+initSocket(server);
 
 process.on('unhandledRejection', err => {
   console.log('UNHANDLED REJECTION! 💥 Shutting down...');

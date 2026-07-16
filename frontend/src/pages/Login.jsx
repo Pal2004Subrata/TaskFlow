@@ -74,7 +74,7 @@ const Login = () => {
                 </div>
                 <p className="text-slate-700 dark:text-slate-300 dark:text-slate-300 mb-6 font-medium leading-relaxed">"TaskFlow has completely transformed how our engineering team operates. It's incredibly fast, intuitive, and the design is unmatched."</p>
                 <div className="flex items-center gap-3 justify-center text-left">
-                   <div className="w-10 h-10 bg-indigo-100 dark:bg-indigo-500/20 border border-indigo-200 dark:border-indigo-500/30 rounded-full flex items-center justify-center text-indigo-600 dark:text-indigo-400 font-bold text-sm">SJ</div>
+                   <div className="w-10 h-10 bg-indigo-100 dark:bg-indigo-500/20 border border-indigo-200 dark:border-indigo-500/30 rounded-full flex items-center justify-center text-indigo-600 dark:text-indigo-200 font-bold text-sm">SJ</div>
                    <div>
                       <div className="font-semibold text-sm text-slate-900 dark:text-white dark:text-white">Sarah Jenkins</div>
                       <div className="text-xs text-slate-500">CTO at TechCorp</div>

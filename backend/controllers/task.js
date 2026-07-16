@@ -4,6 +4,7 @@ import Notification from '../models/Notification.js';
 import catchAsync from '../utils/catchAsync.js';
 import AppError from '../utils/AppError.js';
 import { taskSchema, taskUpdateSchema } from '../utils/validations.js';
+import { parseSmartQuery } from '../utils/smartFeatures.js';
 
 // Middleware to check if user belongs to workspace
 export const checkWorkspaceAccess = catchAsync(async (req, res, next) => {
@@ -64,7 +65,7 @@ export const getTasks = catchAsync(async (req, res, next) => {
   const query = { workspace };
 
   if (search) {
-    query.$text = { $search: search };
+    query.title = { $regex: search, $options: 'i' };
   }
   if (status) query.status = status;
   if (priority) query.priority = priority;
@@ -221,5 +222,19 @@ export const deleteTask = catchAsync(async (req, res, next) => {
   res.status(204).json({
     success: true,
     data: null
+  });
+});
+
+export const smartSearch = catchAsync(async (req, res, next) => {
+  const { query, workspace } = req.query;
+  if (!query || !workspace) {
+     return next(new AppError('Query and workspace are required', 400));
+  }
+  
+  const tasks = await parseSmartQuery(query, workspace);
+  res.status(200).json({
+    success: true,
+    results: tasks.length,
+    data: { tasks }
   });
 });
