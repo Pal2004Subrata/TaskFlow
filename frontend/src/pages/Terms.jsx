@@ -36,18 +36,20 @@ export default function Terms() {
         <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-sky-400/20 dark:bg-sky-600/10 rounded-full blur-[120px] mix-blend-multiply dark:mix-blend-lighten" />
       </div>
 
-      <nav className="relative z-10 w-full px-6 sm:px-8 py-6 flex justify-between items-center max-w-6xl mx-auto">
-        <Link to="/" className="group flex items-center gap-2 transition-transform hover:scale-105">
-          <Logo className="h-16 w-auto" />
-        </Link>
-        <Link 
-          to="/" 
-          className="group flex items-center gap-2 px-6 py-2.5 rounded-full bg-white/70 dark:bg-slate-900/70 text-base font-semibold text-slate-700 dark:text-slate-200 hover:bg-white dark:hover:bg-slate-800 hover:shadow-md transition-all border border-slate-200/60 dark:border-slate-800/60 backdrop-blur-md"
-        >
-          <ArrowLeft className="w-4.5 h-4.5 transition-transform group-hover:-translate-x-1" />
-          <span>Back to Home</span>
-        </Link>
-      </nav>
+      <div className="sticky top-4 z-20 max-w-5xl mx-auto px-4 sm:px-6">
+        <nav className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border border-slate-200/80 dark:border-slate-800/80 rounded-full px-5 h-14 shadow-lg shadow-slate-900/5 flex justify-between items-center">
+          <Link to="/" className="group flex items-center gap-2 transition-transform hover:scale-105">
+            <Logo className="h-10 w-auto" />
+          </Link>
+          <Link 
+            to="/" 
+            className="group flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-sm font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all"
+          >
+            <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-0.5" />
+            <span>Back to Home</span>
+          </Link>
+        </nav>
+      </div>
 
       <main className="relative z-10 flex-1 flex flex-col items-center justify-center px-4 sm:px-6 w-full max-w-5xl mx-auto pb-10">
         

@@ -77,112 +77,111 @@ const LandingPage = () => {
         <div className="absolute bottom-[10%] left-[10%] w-[50vw] h-[50vh] bg-purple-400/20 dark:bg-purple-600/10 rounded-full blur-[120px] mix-blend-multiply dark:mix-blend-lighten" />
       </div>
 
-      {/* Navbar */}
-      <nav className="sticky top-0 z-50 bg-[#F8FAFC] dark:bg-[#020617] border-b border-slate-200/80 dark:border-slate-800/80 transition-colors shadow-xs">
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Logo className="h-16 w-auto text-slate-900 dark:text-white" />
-          </div>
-          
-          <div className="hidden md:flex items-center gap-10 text-[15px] font-semibold text-slate-700 dark:text-slate-300">
-            <a href="#features" className="relative group hover:text-indigo-600 dark:hover:text-indigo-400 transition-all duration-300 inline-block py-1">
-              Features
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-indigo-600 dark:bg-indigo-500 transition-all duration-300 group-hover:w-full"></span>
-            </a>
-            <a href="#solutions" className="relative group hover:text-indigo-600 dark:hover:text-indigo-400 transition-all duration-300 inline-block py-1">
-              Solutions
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-indigo-600 dark:bg-indigo-500 transition-all duration-300 group-hover:w-full"></span>
-            </a>
-            <a href="#resources" className="relative group hover:text-indigo-600 dark:hover:text-indigo-400 transition-all duration-300 inline-block py-1">
-              Resources
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-indigo-600 dark:bg-indigo-500 transition-all duration-300 group-hover:w-full"></span>
-            </a>
-          </div>
+      {/* Floating Navbar */}
+      <div className="sticky top-4 z-50 max-w-6xl mx-auto px-4 sm:px-6">
+        <nav className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border border-slate-200/80 dark:border-slate-800/80 rounded-2xl shadow-lg shadow-slate-900/5 transition-all overflow-hidden">
+          <div className="px-5 sm:px-6 h-14 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <Logo className="h-11 w-auto text-slate-900 dark:text-white" />
+            </div>
+            
+            <div className="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-600 dark:text-slate-300">
+              <a href="#features" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+                Features
+              </a>
+              <a href="#solutions" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+                Solutions
+              </a>
+              <a href="#resources" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+                Resources
+              </a>
+            </div>
 
-          <div className="flex items-center gap-4">
-            <ThemeToggle className="hidden md:flex" />
-            {user ? (
-              <Link 
-                to="/dashboard"
-                className="hidden md:flex group bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2.5 rounded-full text-base font-semibold transition-all duration-300 hover:scale-105 shadow-md shadow-indigo-600/20 items-center gap-2"
-              >
-                Dashboard <ArrowRight className="w-4.5 h-4.5 group-hover:translate-x-1 transition-transform duration-300" />
-              </Link>
-            ) : (
-              <>
+            <div className="flex items-center gap-3">
+              <ThemeToggle className="hidden md:flex" />
+              {user ? (
                 <Link 
-                  to="/login"
-                  className="hidden md:block bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-semibold text-base px-6 py-2.5 rounded-full transition-all duration-300 hover:scale-105 shadow-xs"
+                  to="/dashboard"
+                  className="hidden md:flex group bg-indigo-600 hover:bg-indigo-700 text-white px-4.5 py-2 rounded-full text-sm font-semibold transition-all hover:scale-105 shadow-md shadow-indigo-600/20 items-center gap-1.5"
                 >
-                  Log in
+                  Dashboard <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
                 </Link>
-                <Link 
-                  to="/signup"
-                  className="hidden md:flex group bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2.5 rounded-full text-base font-semibold transition-all duration-300 hover:scale-105 shadow-md shadow-indigo-600/25 items-center gap-2"
-                >
-                  Get Started <ArrowRight className="w-4.5 h-4.5 group-hover:translate-x-1 transition-transform duration-300" />
-                </Link>
-              </>
-            )}
-            <button 
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden p-2 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 transition-colors"
-            >
-              {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
-          </div>
-        </div>
-
-        <AnimatePresence>
-          {isMobileMenuOpen && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 'auto', opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              className="md:hidden border-t border-slate-200 dark:border-slate-800 overflow-hidden bg-white dark:bg-slate-950"
-            >
-              <div className="p-6 flex flex-col gap-6">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium text-slate-700 dark:text-slate-200">Theme</span>
-                  <ThemeToggle />
-                </div>
-                
-                <div className="flex flex-col gap-4">
-                  <a href="#features" onClick={() => setIsMobileMenuOpen(false)} className="text-lg font-medium text-slate-700 dark:text-slate-200">Features</a>
-                  <a href="#solutions" onClick={() => setIsMobileMenuOpen(false)} className="text-lg font-medium text-slate-700 dark:text-slate-200">Solutions</a>
-                  <a href="#resources" onClick={() => setIsMobileMenuOpen(false)} className="text-lg font-medium text-slate-700 dark:text-slate-200">Resources</a>
-                </div>
-
-                <div className="h-px bg-slate-200 dark:bg-slate-800 w-full my-2"></div>
-
-                {user ? (
+              ) : (
+                <>
                   <Link 
-                    to="/dashboard"
-                    className="w-full text-center bg-slate-900 dark:bg-indigo-600 text-white px-5 py-3 rounded-xl font-medium"
+                    to="/login"
+                    className="hidden md:block bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-semibold text-sm px-4.5 py-2 rounded-full transition-all hover:scale-105"
                   >
-                    Go to Dashboard
+                    Log in
                   </Link>
-                ) : (
-                  <div className="flex flex-col gap-3">
-                    <Link 
-                      to="/login"
-                      className="w-full text-center bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 px-5 py-3 rounded-xl font-medium"
-                    >
-                      Log in
-                    </Link>
-                    <Link 
-                      to="/signup"
-                      className="w-full text-center bg-slate-900 dark:bg-indigo-600 text-white px-5 py-3 rounded-xl font-medium shadow-md"
-                    >
-                      Get Started
-                    </Link>
+                  <Link 
+                    to="/signup"
+                    className="hidden md:flex group bg-indigo-600 hover:bg-indigo-700 text-white px-4.5 py-2 rounded-full text-sm font-semibold transition-all hover:scale-105 shadow-md shadow-indigo-600/25 items-center gap-1.5"
+                  >
+                    Get Started <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                  </Link>
+                </>
+              )}
+              <button 
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="md:hidden p-1.5 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 transition-colors"
+              >
+                {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              </button>
+            </div>
+          </div>
+
+          <AnimatePresence>
+            {isMobileMenuOpen && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: 'auto', opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                className="md:hidden border-t border-slate-200 dark:border-slate-800 overflow-hidden bg-white dark:bg-slate-950"
+              >
+                <div className="p-6 flex flex-col gap-6">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium text-slate-700 dark:text-slate-200">Theme</span>
+                    <ThemeToggle />
                   </div>
-                )}
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </nav>
+                  
+                  <div className="flex flex-col gap-4">
+                    <a href="#features" onClick={() => setIsMobileMenuOpen(false)} className="text-lg font-medium text-slate-700 dark:text-slate-200">Features</a>
+                    <a href="#solutions" onClick={() => setIsMobileMenuOpen(false)} className="text-lg font-medium text-slate-700 dark:text-slate-200">Solutions</a>
+                    <a href="#resources" onClick={() => setIsMobileMenuOpen(false)} className="text-lg font-medium text-slate-700 dark:text-slate-200">Resources</a>
+                  </div>
+
+                  <div className="h-px bg-slate-200 dark:bg-slate-800 w-full my-2"></div>
+
+                  {user ? (
+                    <Link 
+                      to="/dashboard"
+                      className="w-full text-center bg-slate-900 dark:bg-indigo-600 text-white px-5 py-3 rounded-xl font-medium"
+                    >
+                      Go to Dashboard
+                    </Link>
+                  ) : (
+                    <div className="flex flex-col gap-3">
+                      <Link 
+                        to="/login"
+                        className="w-full text-center bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 px-5 py-3 rounded-xl font-medium"
+                      >
+                        Log in
+                      </Link>
+                      <Link 
+                        to="/signup"
+                        className="w-full text-center bg-slate-900 dark:bg-indigo-600 text-white px-5 py-3 rounded-xl font-medium shadow-md"
+                      >
+                        Get Started
+                      </Link>
+                    </div>
+                  )}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </nav>
+      </div>
 
       {/* Hero Section */}
       <section className="pt-8 pb-20 px-6 relative">
