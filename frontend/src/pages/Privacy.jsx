@@ -36,15 +36,15 @@ export default function Privacy() {
         <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-sky-400/20 dark:bg-sky-600/10 rounded-full blur-[120px] mix-blend-multiply dark:mix-blend-lighten" />
       </div>
 
-      <nav className="relative z-10 w-full px-6 py-6 flex justify-between items-center max-w-6xl mx-auto">
+      <nav className="relative z-10 w-full px-6 sm:px-8 py-6 flex justify-between items-center max-w-6xl mx-auto">
         <Link to="/" className="group flex items-center gap-2 transition-transform hover:scale-105">
-          <Logo className="h-14 w-auto" />
+          <Logo className="h-16 w-auto" />
         </Link>
         <Link 
           to="/" 
-          className="group flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/50 dark:bg-slate-900/50 text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-800 hover:shadow-md transition-all border border-slate-200/50 dark:border-slate-800/50 backdrop-blur-md"
+          className="group flex items-center gap-2 px-6 py-2.5 rounded-full bg-white/70 dark:bg-slate-900/70 text-base font-semibold text-slate-700 dark:text-slate-200 hover:bg-white dark:hover:bg-slate-800 hover:shadow-md transition-all border border-slate-200/60 dark:border-slate-800/60 backdrop-blur-md"
         >
-          <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
+          <ArrowLeft className="w-4.5 h-4.5 transition-transform group-hover:-translate-x-1" />
           <span>Back to Home</span>
         </Link>
       </nav>

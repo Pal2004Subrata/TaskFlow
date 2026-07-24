@@ -78,37 +78,37 @@ const Dashboard = () => {
         <div className="absolute bottom-[10%] left-[10%] w-[50vw] h-[50vh] bg-purple-400/20 dark:bg-purple-600/10 rounded-full blur-[120px] mix-blend-multiply dark:mix-blend-lighten" />
       </div>
       {/* Top Navigation */}
-      <nav className="bg-white dark:bg-slate-950/80 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 sticky top-0 z-40 transition-colors">
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2">
+      <nav className="bg-white dark:bg-slate-950/80 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 sticky top-0 z-40 transition-colors shadow-xs">
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 h-20 flex items-center justify-between">
+          <div className="flex items-center gap-3">
             <Link to="/">
-              <Logo className="h-14 w-auto text-slate-900 dark:text-white" />
+              <Logo className="h-16 w-auto text-slate-900 dark:text-white" />
             </Link>
           </div>
-          <div className="flex items-center gap-2 md:gap-4">
-            <Link to="/" className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors" title="Go Home">
+          <div className="flex items-center gap-3 md:gap-5">
+            <Link to="/" className="p-2.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors" title="Go Home">
               <Home className="w-5 h-5" />
             </Link>
-            <ThemeToggle className="mr-2 md:mr-4 hidden md:flex" />
+            <ThemeToggle className="mr-2 md:mr-3 hidden md:flex" />
             <NotificationsDropdown />
             <button 
               onClick={() => setIsProfileModalOpen(true)}
-              className="hidden md:flex items-center gap-3 mr-2 md:mr-4 border-r border-slate-200 dark:border-slate-800 pr-4 hover:opacity-80 transition-opacity"
+              className="hidden md:flex items-center gap-3 border-r border-slate-200 dark:border-slate-800 pr-5 hover:opacity-80 transition-opacity"
             >
-              <div className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-600 dark:text-slate-300 font-medium text-sm overflow-hidden relative">
+              <div className="w-9 h-9 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-600 dark:text-slate-300 font-semibold text-sm overflow-hidden relative shadow-xs">
                 {user?.avatar ? (
                   <img src={user.avatar} alt="Profile" className="w-full h-full object-cover" />
                 ) : (
                   user?.name?.charAt(0).toUpperCase()
                 )}
               </div>
-              <span className="text-sm font-medium text-slate-700 dark:text-slate-300 dark:text-slate-200">{user?.name}</span>
+              <span className="text-base font-semibold text-slate-800 dark:text-slate-200">{user?.name}</span>
             </button>
             <button 
               onClick={logout}
-              className="text-slate-500 dark:text-slate-400 hover:text-slate-900 text-sm font-medium transition-colors hidden md:flex items-center gap-2"
+              className="text-slate-500 dark:text-slate-400 hover:text-red-600 dark:hover:text-red-400 text-sm font-semibold transition-colors hidden md:flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-red-50 dark:hover:bg-red-950/30"
             >
-              <LogOut className="w-4 h-4" />
+              <LogOut className="w-4.5 h-4.5" />
               Sign out
             </button>
             <button 
