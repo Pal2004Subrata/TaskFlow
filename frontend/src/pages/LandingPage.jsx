@@ -78,7 +78,7 @@ const LandingPage = () => {
       </div>
 
       {/* Navbar */}
-      <nav className="sticky top-0 z-50 bg-white dark:bg-[#020617] border-b border-slate-200/80 dark:border-slate-800/80 transition-colors shadow-xs">
+      <nav className="sticky top-0 z-50 bg-[#F8FAFC] dark:bg-[#020617] border-b border-slate-200/80 dark:border-slate-800/80 transition-colors shadow-xs">
         <div className="max-w-7xl mx-auto px-6 sm:px-8 h-20 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Logo className="h-16 w-auto text-slate-900 dark:text-white" />

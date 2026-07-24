@@ -186,7 +186,7 @@ const WorkspaceView = () => {
         <div className="absolute bottom-[10%] left-[10%] w-[50vw] h-[50vh] bg-purple-400/20 dark:bg-purple-600/10 rounded-full blur-[120px] mix-blend-multiply dark:mix-blend-lighten" />
       </div>
       {/* Workspace Header - Top nav */}
-      <div className="bg-white dark:bg-[#020617] border-b border-slate-200 dark:border-slate-800 sticky top-0 z-30 shadow-xs transition-colors">
+      <div className="bg-[#F8FAFC] dark:bg-[#020617] border-b border-slate-200 dark:border-slate-800 sticky top-0 z-30 shadow-xs transition-colors">
         <div className="max-w-7xl mx-auto px-6 py-4 flex flex-row justify-between items-center gap-4">
           <div className="flex items-center gap-4">
             <Link to="/dashboard" className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-slate-500 dark:text-slate-400 dark:text-slate-400 dark:hover:text-white transition-colors">

@@ -30,7 +30,7 @@ export const ThemeProvider = ({ children }) => {
     } else {
       document.documentElement.classList.remove('dark');
       localStorage.setItem('theme', 'light');
-      metaThemeColor.setAttribute('content', '#ffffff');
+      metaThemeColor.setAttribute('content', '#F8FAFC');
     }
   }, [isDarkMode]);
 
