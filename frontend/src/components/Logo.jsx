@@ -10,7 +10,7 @@ export default function Logo({ className = "h-10 w-auto" }) {
           `}
         </style>
       </defs>
-      <g transform="translate(-145, -85)">
+      <g transform="translate(-145, -70)">
         <g transform="translate(150,90)">
           <rect x="0" y="0" width="72" height="72" rx="18" fill="#1B2333" />
           <rect x="18" y="42" width="10" height="18" rx="3" fill="#E2A63B" />
