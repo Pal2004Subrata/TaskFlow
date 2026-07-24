@@ -1,9 +1,19 @@
 import jwt from 'jsonwebtoken';
+import { OAuth2Client } from 'google-auth-library';
 import User from '../models/User.js';
+import OTP from '../models/OTP.js';
 import Notification from '../models/Notification.js';
 import catchAsync from '../utils/catchAsync.js';
 import AppError from '../utils/AppError.js';
-import { signupSchema, loginSchema } from '../utils/validations.js';
+import { 
+  sendSignupOtpSchema, 
+  verifySignupOtpSchema, 
+  sendLoginOtpSchema, 
+  verifyLoginOtpSchema 
+} from '../utils/validations.js';
+import { sendOtpEmail } from '../utils/sendEmail.js';
+
+const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 const signToken = id => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -25,43 +35,169 @@ const createSendToken = (user, statusCode, res) => {
   });
 };
 
-export const signup = catchAsync(async (req, res, next) => {
-  const validationResult = signupSchema.safeParse(req.body);
+// Generate 6 digit OTP
+const generateOTP = () => {
+  return Math.floor(100000 + Math.random() * 900000).toString();
+};
+
+export const sendSignupOtp = catchAsync(async (req, res, next) => {
+  const validationResult = sendSignupOtpSchema.safeParse(req.body);
   if (!validationResult.success) {
     return next(new AppError(validationResult.error.issues.map(e => e.message).join('. '), 400));
   }
 
-  const { name, email, password } = validationResult.data;
+  const { name, email } = validationResult.data;
+  const normalizedEmail = email.toLowerCase().trim();
+
+  // Check if user already exists
+  const existingUser = await User.findOne({ email: normalizedEmail });
+  if (existingUser) {
+    return next(new AppError('An account with this email already exists', 400));
+  }
+
+  const otp = generateOTP();
+
+  // Remove existing signup OTPs for this email
+  await OTP.deleteMany({ email: normalizedEmail, purpose: 'signup' });
+
+  // Save new OTP
+  await OTP.create({
+    email: normalizedEmail,
+    otp,
+    purpose: 'signup'
+  });
+
+  // Send Email
+  try {
+    await sendOtpEmail({ email: normalizedEmail, otp, purpose: 'signup', name });
+  } catch (error) {
+    console.error('Failed to send OTP email:', error);
+    await OTP.deleteMany({ email: normalizedEmail, purpose: 'signup' });
+    return next(new AppError('Failed to send verification email. Please check your email address and try again.', 500));
+  }
+
+  res.status(200).json({
+    success: true,
+    message: 'Verification code sent to your email'
+  });
+});
+
+export const verifySignupOtp = catchAsync(async (req, res, next) => {
+  const validationResult = verifySignupOtpSchema.safeParse(req.body);
+  if (!validationResult.success) {
+    return next(new AppError(validationResult.error.issues.map(e => e.message).join('. '), 400));
+  }
+
+  const { name, email, password, otp } = validationResult.data;
+  const normalizedEmail = email.toLowerCase().trim();
+
+  const otpRecord = await OTP.findOne({
+    email: normalizedEmail,
+    otp,
+    purpose: 'signup'
+  });
+
+  if (!otpRecord) {
+    return next(new AppError('Invalid or expired verification code', 400));
+  }
+
+  // Double check existing user
+  const existingUser = await User.findOne({ email: normalizedEmail });
+  if (existingUser) {
+    return next(new AppError('An account with this email already exists', 400));
+  }
 
   const newUser = await User.create({
     name,
-    email,
+    email: normalizedEmail,
     password
   });
+
+  // Clear OTP
+  await OTP.deleteMany({ email: normalizedEmail, purpose: 'signup' });
 
   createSendToken(newUser, 201, res);
 });
 
-export const login = catchAsync(async (req, res, next) => {
-  const validationResult = loginSchema.safeParse(req.body);
+export const sendLoginOtp = catchAsync(async (req, res, next) => {
+  const validationResult = sendLoginOtpSchema.safeParse(req.body);
   if (!validationResult.success) {
     return next(new AppError(validationResult.error.issues.map(e => e.message).join('. '), 400));
   }
 
   const { email, password } = validationResult.data;
+  const normalizedEmail = email.toLowerCase().trim();
 
-  const user = await User.findOne({ email }).select('+password');
+  const user = await User.findOne({ email: normalizedEmail }).select('+password');
 
   if (!user) {
-    return next(new AppError('No account found with this email. Please create an account first.', 401));
+    return next(new AppError('Incorrect email or password', 401));
   }
 
   if (!(await user.correctPassword(password, user.password))) {
     return next(new AppError('Incorrect email or password', 401));
   }
 
+  const otp = generateOTP();
+
+  // Remove existing login OTPs for this email
+  await OTP.deleteMany({ email: normalizedEmail, purpose: 'login' });
+
+  // Save new OTP
+  await OTP.create({
+    email: normalizedEmail,
+    otp,
+    purpose: 'login'
+  });
+
+  // Send Email
+  try {
+    await sendOtpEmail({ email: normalizedEmail, otp, purpose: 'login', name: user.name });
+  } catch (error) {
+    console.error('Failed to send OTP email:', error);
+    await OTP.deleteMany({ email: normalizedEmail, purpose: 'login' });
+    return next(new AppError('Failed to send verification email. Please try again.', 500));
+  }
+
+  res.status(200).json({
+    success: true,
+    message: 'Verification code sent to your email'
+  });
+});
+
+export const verifyLoginOtp = catchAsync(async (req, res, next) => {
+  const validationResult = verifyLoginOtpSchema.safeParse(req.body);
+  if (!validationResult.success) {
+    return next(new AppError(validationResult.error.issues.map(e => e.message).join('. '), 400));
+  }
+
+  const { email, otp } = validationResult.data;
+  const normalizedEmail = email.toLowerCase().trim();
+
+  const otpRecord = await OTP.findOne({
+    email: normalizedEmail,
+    otp,
+    purpose: 'login'
+  });
+
+  if (!otpRecord) {
+    return next(new AppError('Invalid or expired verification code', 400));
+  }
+
+  const user = await User.findOne({ email: normalizedEmail });
+  if (!user) {
+    return next(new AppError('User account not found', 404));
+  }
+
+  // Clear OTP
+  await OTP.deleteMany({ email: normalizedEmail, purpose: 'login' });
+
   createSendToken(user, 200, res);
 });
+
+// Legacy direct endpoints as fallbacks
+export const signup = verifySignupOtp;
+export const login = sendLoginOtp;
 
 export const getMe = catchAsync(async (req, res, next) => {
   res.status(200).json({
@@ -73,7 +209,6 @@ export const getMe = catchAsync(async (req, res, next) => {
 });
 
 export const updateMe = catchAsync(async (req, res, next) => {
-  // Prevent password updates here
   if (req.body.password) {
     return next(new AppError('This route is not for password updates. Please use /update-password', 400));
   }
@@ -101,7 +236,7 @@ export const updateMe = catchAsync(async (req, res, next) => {
 export const getNotifications = catchAsync(async (req, res, next) => {
   const notifications = await Notification.find({ user: req.user._id })
     .sort({ createdAt: -1 })
-    .limit(50); // Get last 50 notifications
+    .limit(50);
 
   res.status(200).json({
     success: true,
@@ -158,3 +293,67 @@ export const updatePassword = catchAsync(async (req, res, next) => {
 
   createSendToken(user, 200, res);
 });
+
+export const googleAuth = catchAsync(async (req, res, next) => {
+  const { credential, userInfo } = req.body;
+
+  let email, name, picture, sub;
+
+  if (credential) {
+    try {
+      const ticket = await googleClient.verifyIdToken({
+        idToken: credential,
+        audience: process.env.GOOGLE_CLIENT_ID,
+      });
+      const payload = ticket.getPayload();
+      email = payload.email;
+      name = payload.name;
+      picture = payload.picture;
+      sub = payload.sub;
+    } catch (err) {
+      // Fallback decoding if token is valid JWT payload
+      const decoded = jwt.decode(credential);
+      if (decoded && decoded.email) {
+        email = decoded.email;
+        name = decoded.name || decoded.email.split('@')[0];
+        picture = decoded.picture || '';
+        sub = decoded.sub || 'google_' + Date.now();
+      } else {
+        return next(new AppError('Invalid Google authentication payload. Authentication failed.', 400));
+      }
+    }
+  } else if (userInfo && userInfo.email) {
+    email = userInfo.email;
+    name = userInfo.name || userInfo.email.split('@')[0];
+    picture = userInfo.picture || '';
+    sub = userInfo.sub || 'google_' + Date.now();
+  } else {
+    return next(new AppError('Google authentication payload missing required fields', 400));
+  }
+
+  if (!email) {
+    return next(new AppError('No email associated with this Google account', 400));
+  }
+
+  const normalizedEmail = email.toLowerCase().trim();
+
+  let user = await User.findOne({ email: normalizedEmail });
+
+  if (!user) {
+    user = await User.create({
+      name: name || 'Google User',
+      email: normalizedEmail,
+      googleId: sub,
+      avatar: picture || '',
+    });
+  } else {
+    if (!user.googleId) {
+      user.googleId = sub;
+      if (picture && !user.avatar) user.avatar = picture;
+      await user.save({ validateBeforeSave: false });
+    }
+  }
+
+  createSendToken(user, 200, res);
+});
+

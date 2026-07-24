@@ -1,15 +1,32 @@
 import { z } from 'zod';
 
-export const signupSchema = z.object({
+export const sendSignupOtpSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
   email: z.string().email('Invalid email address'),
   password: z.string().min(6, 'Password must be at least 6 characters'),
 });
 
-export const loginSchema = z.object({
+export const verifySignupOtpSchema = z.object({
+  name: z.string().min(2, 'Name must be at least 2 characters'),
+  email: z.string().email('Invalid email address'),
+  password: z.string().min(6, 'Password must be at least 6 characters'),
+  otp: z.string().length(6, 'OTP must be 6 digits'),
+});
+
+export const sendLoginOtpSchema = z.object({
   email: z.string().email('Invalid email address'),
   password: z.string().min(1, 'Password is required'),
 });
+
+export const verifyLoginOtpSchema = z.object({
+  email: z.string().email('Invalid email address'),
+  otp: z.string().length(6, 'OTP must be 6 digits'),
+});
+
+export const signupSchema = sendSignupOtpSchema;
+export const loginSchema = sendLoginOtpSchema;
+
+
 
 export const workspaceSchema = z.object({
   name: z.string().min(2, 'Workspace name must be at least 2 characters'),

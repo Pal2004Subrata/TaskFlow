@@ -20,7 +20,7 @@ api.interceptors.response.use(
     // If unauthorized, could redirect to login here
     if (error.response?.status === 401) {
       const url = error.config?.url || '';
-      if (!url.includes('/auth/login') && !url.includes('/auth/update-password')) {
+      if (!url.includes('/auth/')) {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
         window.location.href = '/login';

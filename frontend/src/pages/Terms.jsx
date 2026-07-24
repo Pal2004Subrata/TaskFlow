@@ -60,7 +60,7 @@ export default function Terms() {
           <div className="inline-flex items-center justify-center p-2.5 bg-white/60 dark:bg-slate-800/60 text-indigo-500 dark:text-indigo-400 rounded-xl mb-4 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50 shadow-sm">
             <FileText className="w-6 h-6" />
           </div>
-          <h1 className="text-5xl md:text-6xl font-bold text-slate-900 dark:text-white mb-4" style={{ fontFamily: "'Forum', serif" }}>
+          <h1 className="text-5xl md:text-6xl font-bold text-slate-900 dark:text-white mb-4">
             Terms & Conditions
           </h1>
           <p className="text-lg text-slate-500 dark:text-slate-400 max-w-2xl mx-auto">
@@ -93,7 +93,7 @@ export default function Terms() {
                 {term.icon}
               </div>
               <div className="flex-1">
-                <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-1" style={{ fontFamily: "'Forum', serif" }}>{term.title}</h3>
+                <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-1">{term.title}</h3>
                 <p className="text-slate-600 dark:text-slate-400 text-base leading-relaxed">
                   {term.desc}
                 </p>
