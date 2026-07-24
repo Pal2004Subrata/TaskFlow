@@ -78,7 +78,7 @@ const Dashboard = () => {
         <div className="absolute bottom-[10%] left-[10%] w-[50vw] h-[50vh] bg-purple-400/20 dark:bg-purple-600/10 rounded-full blur-[120px] mix-blend-multiply dark:mix-blend-lighten" />
       </div>
       {/* Top Navigation */}
-      <nav className="bg-white dark:bg-slate-950/80 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 sticky top-0 z-40 transition-colors shadow-xs">
+      <nav className="bg-white dark:bg-[#020617] border-b border-slate-200 dark:border-slate-800 sticky top-0 z-40 transition-colors shadow-xs">
         <div className="max-w-7xl mx-auto px-6 sm:px-8 h-20 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Link to="/">

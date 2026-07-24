@@ -16,12 +16,21 @@ export const ThemeProvider = ({ children }) => {
   });
 
   useEffect(() => {
+    let metaThemeColor = document.querySelector('meta[name="theme-color"]');
+    if (!metaThemeColor) {
+      metaThemeColor = document.createElement('meta');
+      metaThemeColor.name = 'theme-color';
+      document.head.appendChild(metaThemeColor);
+    }
+
     if (isDarkMode) {
       document.documentElement.classList.add('dark');
       localStorage.setItem('theme', 'dark');
+      metaThemeColor.setAttribute('content', '#020617');
     } else {
       document.documentElement.classList.remove('dark');
       localStorage.setItem('theme', 'light');
+      metaThemeColor.setAttribute('content', '#ffffff');
     }
   }, [isDarkMode]);
 
